@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { VIPItem } from "@/types";
+import { FlowAnchor } from "@/components/FlowLine";
 
 const formatLabels: Record<string, string> = {
   offline: "Офлайн",
@@ -13,7 +14,10 @@ interface VIPSectionProps {
 
 export function VIPSection({ items }: VIPSectionProps) {
   return (
-    <section id="vip" className="py-32 md:py-44 bg-card">
+    <section id="vip" className="relative py-32 md:py-44 bg-card">
+      <div className="absolute left-0 top-[15%] w-8 h-px pointer-events-none" aria-hidden>
+        <FlowAnchor id="vip" offsetY={0.5} offsetX={1} />
+      </div>
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="reveal mb-24">
           <span className="section-label">

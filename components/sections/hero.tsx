@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { siteConfig } from "@/lib/config/site";
 import type { VIPItem } from "@/types";
+import { FlowAnchor } from "@/components/FlowLine";
 
 interface HeroProps {
   featuredVIP?: VIPItem;
@@ -11,6 +12,9 @@ export function Hero({ featuredVIP }: HeroProps) {
 
   return (
     <section className="hero-section relative min-h-[100dvh] md:min-h-screen pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden">
+      <div className="absolute left-0 top-[12%] w-8 h-px pointer-events-none" aria-hidden>
+        <FlowAnchor id="hero" offsetY={0.5} offsetX={1} />
+      </div>
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12 h-full flex flex-col">
         {/* Quiet nav label row on top */}
         <div className="hero-headline flex flex-col md:flex-row md:items-center gap-2 md:gap-6 mb-6 md:mb-16 flex-shrink-0">
@@ -46,7 +50,7 @@ export function Hero({ featuredVIP }: HeroProps) {
           <div className="relative w-full h-[55vh] min-h-[200px] flex-shrink-0">
             <div className="hero-image hero-image-main absolute right-6 top-0 w-[78%] h-full overflow-hidden">
               <Image
-                src="/images/hero-bg.jpg"
+                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=85"
                 alt=""
                 fill
                 priority
@@ -56,7 +60,7 @@ export function Hero({ featuredVIP }: HeroProps) {
             </div>
             <div className="hero-image hero-image-secondary absolute bottom-0 left-0 w-[38%] aspect-[3/4] overflow-hidden z-10 -translate-y-3 translate-x-2">
               <Image
-                src="/images/placeholder-1.jpg"
+                src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=85"
                 alt=""
                 fill
                 className="object-cover"
@@ -121,7 +125,7 @@ export function Hero({ featuredVIP }: HeroProps) {
           <div className="relative w-[50%] min-h-[400px] lg:min-h-[500px]">
             <div className="hero-image hero-image-main absolute right-0 top-0 w-[85%] aspect-[4/5] overflow-hidden">
               <Image
-                src="/images/hero-bg.jpg"
+                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=85"
                 alt=""
                 fill
                 priority
@@ -131,7 +135,7 @@ export function Hero({ featuredVIP }: HeroProps) {
             </div>
             <div className="hero-image hero-image-secondary absolute bottom-0 left-0 w-[45%] aspect-[3/4] overflow-hidden z-10 -translate-y-8 translate-x-4">
               <Image
-                src="/images/placeholder-1.jpg"
+                src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=85"
                 alt=""
                 fill
                 className="object-cover"

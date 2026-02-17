@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { DM_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { FirstLoadLoader } from "@/components/first-load-loader";
+import { FlowLine } from "@/components/FlowLine";
 
 const dmSans = DM_Sans({
   subsets: ["latin", "latin-ext"],
@@ -42,8 +43,11 @@ export default function RootLayout({
   return (
     <html lang="uk" className={`${dmSans.variable} ${cormorant.variable}`}>
       <body className="font-sans antialiased">
-        <FirstLoadLoader />
-        {children}
+        <FlowLine />
+        <div className="relative z-10">
+          <FirstLoadLoader />
+          {children}
+        </div>
       </body>
     </html>
   );

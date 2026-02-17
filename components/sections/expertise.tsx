@@ -1,9 +1,14 @@
 import { expertiseStats } from "@/lib/config/site";
 import { StatCount } from "@/components/stat-count";
+import { FlowAnchor } from "@/components/FlowLine";
 
 export function Expertise() {
   return (
-    <section className="py-28 md:py-40">
+    <section className="relative py-28 md:py-40">
+      {/* Anchor in left gutter to avoid crossing stats */}
+      <div className="absolute left-0 top-[20%] w-8 h-px pointer-events-none" aria-hidden>
+        <FlowAnchor id="numbers" offsetY={0.5} offsetX={1} />
+      </div>
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="reveal">
           {/* Asymmetric layout: label left, stats scattered right */}

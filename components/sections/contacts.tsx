@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { contacts } from "@/lib/config/site";
+import { FlowAnchor } from "@/components/FlowLine";
 import { Send, Instagram, Phone, Mail, Copy, Check } from "lucide-react";
 
 function CopyButton({ text }: { text: string }) {
@@ -65,7 +66,11 @@ const contactItems = [
 
 export function Contacts() {
   return (
-    <section id="contacts" className="py-32 md:py-44">
+    <section id="contacts" className="relative py-32 md:py-44">
+      {/* Anchor in left gutter to avoid crossing content */}
+      <div className="absolute left-0 top-[15%] w-8 h-px pointer-events-none" aria-hidden>
+        <FlowAnchor id="contacts" offsetY={0.5} offsetX={1} />
+      </div>
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="flex flex-col md:flex-row gap-16 md:gap-24">
           {/* Left: heading */}

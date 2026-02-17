@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { FlowAnchor } from "@/components/FlowLine";
 
 const directions = [
   {
@@ -22,7 +23,10 @@ const directions = [
 
 export function Directions() {
   return (
-    <section id="directions" className="py-28 md:py-40 bg-card">
+    <section id="directions" className="relative py-28 md:py-40 bg-card">
+      <div className="absolute left-0 top-[15%] w-8 h-px pointer-events-none" aria-hidden>
+        <FlowAnchor id="directions" offsetY={0.5} offsetX={1} />
+      </div>
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="reveal">
           <span className="section-label">
