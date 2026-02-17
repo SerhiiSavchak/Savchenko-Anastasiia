@@ -1,56 +1,53 @@
-import { Monitor, MapPin } from "lucide-react";
-
 const directions = [
   {
     title: "Онлайн",
     description:
-      "Практики з будь-якої точки світу. Zoom-сесії, відеоуроки та підтримка у Telegram.",
-    icon: Monitor,
-    filter: "online",
+      "Практики з будь-якої точки свiту. Zoom-сесiї, вiдеоуроки та пiдтримка у Telegram.",
+    number: "01",
   },
   {
     title: "Офлайн",
     description:
-      "Очні практики та групові заняття у Києві. Жива енергія та індивідуальний підхід.",
-    icon: MapPin,
-    filter: "offline",
+      "Очнi практики та груповi заняття у Києвi. Жива енергiя та iндивiдуальний пiдхiд.",
+    number: "02",
   },
 ];
 
 export function Directions() {
   return (
-    <section id="directions" className="py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="reveal text-center mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+    <section id="directions" className="py-28 md:py-40 bg-card">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <div className="reveal">
+          <span className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
             Формати
           </span>
-          <h2 className="font-serif text-3xl md:text-4xl mt-3">
+          <h2 className="font-serif text-4xl md:text-5xl font-light mt-5 mb-20 leading-[1.1]">
             Напрямки роботи
           </h2>
-        </div>
 
-        <div className="reveal grid grid-cols-1 md:grid-cols-2 gap-8">
-          {directions.map((dir) => (
-            <a
-              key={dir.filter}
-              href={`#products`}
-              className="group flex flex-col p-8 md:p-10 border border-border transition-colors hover:bg-muted"
-            >
-              <dir.icon
-                size={28}
-                className="text-accent mb-6"
-                strokeWidth={1.5}
-              />
-              <h3 className="font-serif text-2xl mb-3">{dir.title}</h3>
-              <p className="text-muted-foreground leading-relaxed text-sm flex-1">
-                {dir.description}
-              </p>
-              <span className="mt-6 text-sm text-accent hover-line self-start">
-                Переглянути послуги
-              </span>
-            </a>
-          ))}
+          {/* Editorial spread: two directions as side-by-side text blocks */}
+          <div className="flex flex-col md:flex-row gap-16 md:gap-24">
+            {directions.map((dir) => (
+              <a
+                key={dir.number}
+                href="#products"
+                className="group flex-1"
+              >
+                <span className="font-serif text-7xl md:text-8xl lg:text-9xl font-light text-accent/20 leading-none">
+                  {dir.number}
+                </span>
+                <h3 className="font-serif text-3xl md:text-4xl font-light mt-4 mb-4">
+                  {dir.title}
+                </h3>
+                <p className="text-muted-foreground leading-[1.8] text-[15px] max-w-sm">
+                  {dir.description}
+                </p>
+                <span className="inline-block mt-6 hover-line text-[11px] uppercase tracking-[0.18em] text-muted-foreground group-hover:text-foreground transition-colors">
+                  Переглянути послуги
+                </span>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -10,77 +10,70 @@ export function Hero({ featuredVIP }: HeroProps) {
   const vip = featuredVIP;
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Background texture */}
-      <Image
-        src="/images/hero-bg.jpg"
-        alt=""
-        fill
-        priority
-        className="object-cover opacity-30"
-        sizes="100vw"
-      />
+    <section className="relative min-h-screen pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        {/* Magazine cover layout: large title over image */}
+        <div className="flex flex-col gap-16 md:gap-0">
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6 py-32 md:py-40">
-        <div className="flex flex-col md:flex-row md:items-center gap-12 md:gap-16">
-          {/* Text */}
-          <div className="flex-1 max-w-xl">
-            <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground mb-4">
+          {/* Title area -- asymmetric, overlaps image on desktop */}
+          <div className="relative z-10 md:max-w-[55%]">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground mb-6">
               {siteConfig.tagline}
             </p>
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight text-balance">
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5rem] leading-[1.05] font-light text-balance">
               {siteConfig.heroTitle}
             </h1>
-            <p className="mt-6 text-muted-foreground leading-relaxed max-w-md">
+            <p className="mt-8 text-muted-foreground leading-relaxed max-w-sm text-[15px]">
               {siteConfig.heroSubtitle}
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-10 flex items-center gap-8">
               <a
                 href="#vip"
-                className="btn-micro inline-flex items-center justify-center bg-foreground text-background px-8 py-3 text-sm tracking-wide"
+                className="hover-line text-[11px] uppercase tracking-[0.2em] text-foreground"
               >
                 VIP програми
               </a>
+              <span className="text-muted-foreground/40">|</span>
               <a
                 href="#products"
-                className="btn-micro inline-flex items-center justify-center border border-foreground px-8 py-3 text-sm tracking-wide"
+                className="hover-line text-[11px] uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors"
               >
-                Усі послуги
+                Усi послуги
               </a>
             </div>
           </div>
 
-          {/* Featured VIP card */}
+          {/* Hero image -- floats to the right, partially overlapping */}
+          <div className="relative md:absolute md:right-0 md:top-28 md:w-[50%] lg:w-[45%] md:h-[calc(100%-7rem)]">
+            <div className="relative w-full aspect-[3/4] md:aspect-auto md:h-full overflow-hidden">
+              <Image
+                src="/images/hero-bg.jpg"
+                alt=""
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            <p className="img-caption mt-3">{"Фото з ретриту в Карпатах"}</p>
+          </div>
+
+          {/* Featured VIP teaser -- small, editorial, below on mobile */}
           {vip && (
-            <div className="flex-1 max-w-md">
-              <div className="relative group">
-                <div className="overflow-hidden">
-                  <Image
-                    src={vip.coverImage}
-                    alt={vip.title}
-                    width={480}
-                    height={600}
-                    className="w-full object-cover aspect-[4/5] transition-transform duration-700 group-hover:scale-[1.02]"
-                    sizes="(max-width: 768px) 100vw, 480px"
-                  />
-                </div>
-                <div className="mt-4">
-                  <span className="text-xs uppercase tracking-[0.15em] text-accent">
-                    {vip.type === "retreat" ? "Ретрит" : "Менторинг"}
-                  </span>
-                  <h3 className="font-serif text-xl mt-1">{vip.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
-                    {vip.shortDescription}
-                  </p>
-                </div>
-              </div>
+            <div className="relative z-10 md:mt-20 max-w-xs">
+              <span className="text-[10px] uppercase tracking-[0.3em] text-accent">
+                {vip.type === "retreat" ? "Ретрит" : "Менторинг"}
+              </span>
+              <h3 className="font-serif text-2xl font-light mt-2 leading-snug">
+                {vip.title}
+              </h3>
+              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                {vip.shortDescription}
+              </p>
             </div>
           )}
         </div>
       </div>
-
-      {/* Thin decorative line */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-border" />
     </section>
   );
 }

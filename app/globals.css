@@ -1,63 +1,62 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+@theme inline {
+  /* ── Fonts ── */
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", ui-serif, Georgia, serif;
 
-  --color-background: #FFFFFF;
+  /* ── Warm editorial palette ── */
+  --color-background: #F5F2EC;
   --color-foreground: #1A1A1A;
-  --color-muted: #F5F3F0;
-  --color-muted-foreground: #6B6560;
-  --color-accent: #7A3B4E;
-  --color-accent-foreground: #FFFFFF;
-  --color-border: #E8E4E0;
-  --color-card: #FAFAF8;
+  --color-muted: #EDE9E1;
+  --color-muted-foreground: #7A7368;
+  --color-accent: #9C8B7A;
+  --color-accent-foreground: #1A1A1A;
+  --color-border: #DDD8D0;
+  --color-card: #FDFBF8;
   --color-card-foreground: #1A1A1A;
 
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
+  /* ── Zero radius (editorial) ── */
+  --radius-sm: 0rem;
+  --radius-md: 0rem;
+  --radius-lg: 0rem;
 }
 
 /* ── Base ── */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.7;
+}
+
+::selection {
+  background: var(--color-foreground);
+  color: var(--color-background);
 }
 
 /* ── Scroll Reveal ── */
 .reveal {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition: opacity 0.9s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.9s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ── Hand-drawn underline SVG ── */
-.hand-underline {
-  position: relative;
-  display: inline-block;
-}
-.hand-underline::after {
-  content: "";
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 100%;
-  height: 6px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8'%3E%3Cpath d='M1 5 C 40 2, 60 7, 100 4 S 160 1, 199 5' stroke='%237A3B4E' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center;
-  background-size: 100% 100%;
-}
-
-/* ── Subtle hover underline ── */
+/* ── Hover underline (text-link buttons) ── */
 .hover-line {
   position: relative;
+  display: inline-block;
 }
 .hover-line::after {
   content: "";
@@ -67,20 +66,18 @@ body {
   width: 0;
   height: 1px;
   background: currentColor;
-  transition: width 0.3s ease;
+  transition: width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 .hover-line:hover::after {
   width: 100%;
 }
 
-/* ── Button micro-interaction ── */
-.btn-micro {
-  transition: opacity 0.2s ease, transform 0.15s ease;
-}
-.btn-micro:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-.btn-micro:active {
-  transform: translateY(0);
+/* ── Image caption style ── */
+.img-caption {
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+  margin-top: 0.75rem;
 }
