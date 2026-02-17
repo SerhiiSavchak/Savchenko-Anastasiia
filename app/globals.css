@@ -2,66 +2,61 @@
 
 @theme inline {
   /* ── Fonts ── */
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
 
-  /* ── Colors: B&W editorial + muted burgundy accent ── */
+  /* ── Strict monochrome palette ── */
   --color-background: #FFFFFF;
-  --color-foreground: #0A0A0A;
-  --color-muted: #F5F5F5;
-  --color-muted-foreground: #6B6B6B;
-  --color-accent: #5C2434;
+  --color-foreground: #000000;
+  --color-muted: #FFFFFF;
+  --color-muted-foreground: #666666;
+  --color-accent: #000000;
   --color-accent-foreground: #FFFFFF;
-  --color-border: #E0E0E0;
-  --color-card: #FAFAFA;
-  --color-card-foreground: #0A0A0A;
+  --color-border: #EAEAEA;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #000000;
 
-  /* ── Radius ── */
+  /* ── Zero radius ── */
   --radius-sm: 0rem;
   --radius-md: 0rem;
   --radius-lg: 0rem;
 }
 
 /* ── Base ── */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+::selection {
+  background: #000;
+  color: #fff;
 }
 
 /* ── Scroll Reveal ── */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transform: translateY(20px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ── Hand-drawn underline SVG (accent burgundy) ── */
-.hand-underline {
-  position: relative;
-  display: inline-block;
-}
-.hand-underline::after {
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  left: -4px;
-  width: calc(100% + 8px);
-  height: 8px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8'%3E%3Cpath d='M2 6 C 30 2, 70 7, 100 4 S 170 1, 198 5' stroke='%235C2434' fill='none' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center;
-  background-size: 100% 100%;
-  opacity: 0.7;
-}
-
-/* ── Subtle hover underline ── */
+/* ── Hover underline (text-first buttons) ── */
 .hover-line {
   position: relative;
+  display: inline-block;
 }
 .hover-line::after {
   content: "";
@@ -71,55 +66,27 @@ body {
   width: 0;
   height: 1px;
   background: currentColor;
-  transition: width 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 .hover-line:hover::after {
   width: 100%;
 }
 
-/* ── Button micro-interaction ── */
-.btn-micro {
-  transition: opacity 0.2s ease, transform 0.15s ease;
-}
-.btn-micro:hover {
-  opacity: 0.88;
-  transform: translateY(-1px);
-}
-.btn-micro:active {
-  transform: translateY(0);
-}
-
-/* ── Editorial decorative thin line ── */
-.editorial-line {
-  position: relative;
-}
-.editorial-line::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 48px;
+/* ── Thin editorial divider ── */
+.editorial-divider {
+  width: 100%;
   height: 1px;
-  background-color: var(--color-foreground);
-  opacity: 0.2;
+  background: #eaeaea;
 }
 
-/* ── Signature element ── */
-.signature {
+/* ── Editorial mark (small decorative cross) ── */
+.editorial-mark::before {
+  content: "+";
+  display: inline-block;
   font-family: var(--font-serif);
-  font-style: italic;
   font-weight: 300;
-  letter-spacing: 0.02em;
-  opacity: 0.5;
-}
-
-/* ── Image offset (art-house slight offset) ── */
-.art-offset {
-  transform: translate(8px, -8px);
-}
-@media (max-width: 768px) {
-  .art-offset {
-    transform: none;
-  }
+  font-size: 0.75rem;
+  color: #999;
+  margin-right: 0.75rem;
+  vertical-align: middle;
 }
