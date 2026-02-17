@@ -50,17 +50,17 @@ export function Products({ products }: ProductsProps) {
   );
 
   return (
-    <section id="products" className="py-24 md:py-32 bg-muted">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="reveal text-center mb-12">
-          <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+    <section id="products" className="py-28 md:py-40 bg-muted">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="reveal text-center mb-16">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
             Каталог
           </span>
-          <h2 className="font-serif text-3xl md:text-4xl mt-3">Послуги</h2>
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light mt-4">Послуги</h2>
         </div>
 
         {/* Tabs */}
-        <div className="reveal flex flex-wrap justify-center gap-2 mb-6">
+        <div className="reveal flex flex-wrap justify-center gap-3 mb-8">
           {tabs.map((tab) => (
             <button
               key={tab.key}
@@ -68,10 +68,10 @@ export function Products({ products }: ProductsProps) {
                 setActiveTab(tab.key);
                 setActiveTag(null);
               }}
-              className={`px-5 py-2 text-sm transition-colors ${
+              className={`px-6 py-2.5 text-xs uppercase tracking-[0.15em] transition-colors ${
                 activeTab === tab.key
                   ? "bg-foreground text-background"
-                  : "border border-border text-muted-foreground hover:text-foreground"
+                  : "border border-foreground/15 text-muted-foreground hover:text-foreground hover:border-foreground/40"
               }`}
             >
               {tab.label}
@@ -81,15 +81,15 @@ export function Products({ products }: ProductsProps) {
 
         {/* Direction tag chips */}
         {tags.length > 0 && (
-          <div className="reveal flex flex-wrap justify-center gap-2 mb-10">
+          <div className="reveal flex flex-wrap justify-center gap-2 mb-12">
             {tags.map((tag) => (
               <button
                 key={tag}
                 onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-                className={`px-4 py-1.5 text-xs transition-colors ${
+                className={`px-4 py-1.5 text-[11px] uppercase tracking-[0.1em] transition-colors ${
                   activeTag === tag
                     ? "bg-accent text-accent-foreground"
-                    : "border border-border text-muted-foreground hover:text-foreground"
+                    : "border border-foreground/10 text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {tag}
@@ -99,7 +99,7 @@ export function Products({ products }: ProductsProps) {
         )}
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-foreground/10">
           {filtered.map((product) => (
             <ProductCard
               key={product.id}

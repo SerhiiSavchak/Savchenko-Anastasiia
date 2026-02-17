@@ -61,39 +61,39 @@ const contactItems = [
 
 export function Contacts() {
   return (
-    <section id="contacts" className="py-24 md:py-32 bg-muted">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="reveal text-center mb-16">
-          <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+    <section id="contacts" className="py-28 md:py-40 bg-foreground text-background">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="reveal text-center mb-20">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-background/50">
             Контакти
           </span>
-          <h2 className="font-serif text-3xl md:text-4xl mt-3">
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light mt-4">
             {"Зв'яжіться зі мною"}
           </h2>
-          <p className="mt-4 text-muted-foreground max-w-md mx-auto text-sm leading-relaxed">
+          <p className="mt-6 text-background/60 max-w-md mx-auto text-base leading-relaxed">
             Оберіть зручний спосіб. Відповідаю протягом 24 годин.
           </p>
         </div>
 
-        <div className="reveal grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+        <div className="reveal grid grid-cols-1 sm:grid-cols-2 gap-px bg-background/10 max-w-2xl mx-auto">
           {contactItems.map((item) => (
             <a
               key={item.label}
               href={item.href}
               target={item.href.startsWith("http") ? "_blank" : undefined}
               rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="group flex items-center gap-4 p-6 border border-border bg-background transition-colors hover:bg-foreground hover:text-background"
+              className="group flex items-center gap-4 p-8 bg-foreground transition-colors hover:bg-foreground/80"
             >
               <item.icon
                 size={20}
-                strokeWidth={1.5}
-                className="text-accent group-hover:text-background transition-colors"
+                strokeWidth={1}
+                className="text-background/40 group-hover:text-background transition-colors"
               />
               <div className="flex-1 min-w-0">
-                <div className="text-xs text-muted-foreground group-hover:text-background/70 transition-colors">
+                <div className="text-[10px] uppercase tracking-[0.15em] text-background/40 group-hover:text-background/70 transition-colors">
                   {item.label}
                 </div>
-                <div className="text-sm truncate">{item.displayValue}</div>
+                <div className="text-sm text-background/90 truncate mt-1">{item.displayValue}</div>
               </div>
               {item.copyable && (
                 <span onClick={(e) => e.preventDefault()}>

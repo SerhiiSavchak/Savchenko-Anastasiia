@@ -1,27 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Manrope, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-inter",
+  variable: "--font-manrope",
   display: "swap",
 });
 
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-playfair",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-cormorant",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Anastasiia Savchenko | Expert Practice",
+  title: "SAVCHENKO | Практики, ретрити, менторинг",
   description:
-    "Практики, ретрити та менторинг від Анастасії Савченко. Онлайн та офлайн формати.",
+    "Простір для трансформації та практики. Ретрити, менторинг та індивідуальна підтримка від Анастасії Савченко.",
   openGraph: {
-    title: "Anastasiia Savchenko | Expert Practice",
+    title: "SAVCHENKO | Практики, ретрити, менторинг",
     description:
-      "Практики, ретрити та менторинг від Анастасії Савченко.",
+      "Простір для трансформації та практики від Анастасії Савченко.",
     type: "website",
   },
 };
@@ -38,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="uk" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="uk" className={`${manrope.variable} ${cormorant.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );
