@@ -16,10 +16,14 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="ml-2 text-background/30 hover:text-background/70 transition-colors"
+      className="ml-3 text-muted-foreground/40 hover:text-foreground transition-colors"
       aria-label={`Copy ${text}`}
     >
-      {copied ? <Check size={14} strokeWidth={1.2} /> : <Copy size={14} strokeWidth={1.2} />}
+      {copied ? (
+        <Check size={13} strokeWidth={1.2} />
+      ) : (
+        <Copy size={13} strokeWidth={1.2} />
+      )}
     </button>
   );
 }
@@ -61,48 +65,62 @@ const contactItems = [
 
 export function Contacts() {
   return (
-    <section id="contacts" className="py-28 md:py-44 bg-foreground text-background">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="reveal text-center mb-20">
-          <span className="text-[10px] uppercase tracking-[0.35em] text-background/40">
-            Контакти
-          </span>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl mt-5">
-            {"Зв'яжіться зі мною"}
-          </h2>
-          <p className="mt-6 text-background/50 max-w-md mx-auto text-base leading-relaxed">
-            Оберіть зручний спосіб. Відповідаю протягом 24 годин.
-          </p>
-        </div>
+    <section id="contacts" className="py-32 md:py-44">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <div className="reveal flex flex-col md:flex-row gap-16 md:gap-24">
+          {/* Left: heading */}
+          <div className="md:w-2/5 shrink-0">
+            <span className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
+              Контакти
+            </span>
+            <h2 className="font-serif text-4xl md:text-5xl font-light mt-5 leading-[1.1]">
+              {"Зв'яжiться"}<br />зi мною
+            </h2>
+            <p className="mt-6 text-muted-foreground leading-[1.8] text-[15px] max-w-xs">
+              Оберiть зручний спосiб. Вiдповiдаю протягом 24 годин.
+            </p>
+          </div>
 
-        <div className="reveal max-w-2xl mx-auto">
-          {contactItems.map((item, i) => (
-            <a
-              key={item.label}
-              href={item.href}
-              target={item.href.startsWith("http") ? "_blank" : undefined}
-              rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="group flex items-center gap-6 py-6 transition-opacity hover:opacity-70"
-              style={i > 0 ? { borderTop: "1px solid rgba(255,255,255,0.08)" } : undefined}
-            >
-              <item.icon
-                size={18}
-                strokeWidth={1}
-                className="text-background/30 shrink-0"
-              />
-              <div className="flex-1 min-w-0">
-                <div className="text-[10px] uppercase tracking-[0.2em] text-background/30 mb-1">
-                  {item.label}
+          {/* Right: contact list as quiet editorial list */}
+          <div className="flex-1 md:pt-6">
+            {contactItems.map((item, i) => (
+              <a
+                key={item.label}
+                href={item.href}
+                target={item.href.startsWith("http") ? "_blank" : undefined}
+                rel={
+                  item.href.startsWith("http")
+                    ? "noopener noreferrer"
+                    : undefined
+                }
+                className="group flex items-center gap-5 py-6 transition-colors hover:text-foreground"
+                style={
+                  i > 0
+                    ? { borderTop: "1px solid var(--color-border)" }
+                    : undefined
+                }
+              >
+                <item.icon
+                  size={16}
+                  strokeWidth={1.2}
+                  className="text-accent shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-1">
+                    {item.label}
+                  </div>
+                  <div className="text-sm text-foreground/80 truncate">
+                    {item.displayValue}
+                  </div>
                 </div>
-                <div className="text-sm text-background/80 truncate">{item.displayValue}</div>
-              </div>
-              {item.copyable && (
-                <span onClick={(e) => e.preventDefault()}>
-                  <CopyButton text={item.value} />
-                </span>
-              )}
-            </a>
-          ))}
+                {item.copyable && (
+                  <span onClick={(e) => e.preventDefault()}>
+                    <CopyButton text={item.value} />
+                  </span>
+                )}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>

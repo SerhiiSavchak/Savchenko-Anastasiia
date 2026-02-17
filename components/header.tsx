@@ -9,8 +9,8 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-6 lg:px-12">
         <BrandLogo size="sm" />
 
         {/* Desktop nav */}
@@ -19,7 +19,7 @@ export function Header() {
             <a
               key={item.href}
               href={item.href}
-              className="hover-line text-xs uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
+              className="hover-line text-[11px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
             >
               {item.label}
             </a>
@@ -28,7 +28,7 @@ export function Header() {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden"
+          className="md:hidden text-foreground"
           onClick={() => setOpen(!open)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
@@ -36,19 +36,16 @@ export function Header() {
         </button>
       </div>
 
-      {/* Thin bottom line */}
-      <div className="h-px bg-foreground/10" />
-
       {/* Mobile nav */}
       {open && (
-        <nav className="md:hidden bg-background px-6 py-8 border-b border-border" aria-label="Mobile navigation">
-          <div className="flex flex-col gap-6">
+        <nav className="md:hidden bg-background px-6 pb-8 pt-2" aria-label="Mobile navigation">
+          <div className="flex flex-col gap-5">
             {navigation.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="text-sm uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
+                className="text-sm tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
               >
                 {item.label}
               </a>

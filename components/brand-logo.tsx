@@ -4,28 +4,20 @@ interface BrandLogoProps {
 }
 
 export function BrandLogo({ className = "", size = "md" }: BrandLogoProps) {
-  const textSize = {
-    sm: "text-[11px] tracking-[0.4em]",
-    md: "text-[13px] tracking-[0.4em]",
-    lg: "text-[18px] tracking-[0.5em]",
+  const sizes = {
+    sm: "text-xs tracking-[0.35em]",
+    md: "text-sm tracking-[0.35em]",
+    lg: "text-base tracking-[0.4em]",
   };
 
   return (
-    <a href="#" className={`inline-block ${className}`}>
-      <span className={`font-sans font-light uppercase ${textSize[size]}`}>
-        SAVCHENKO
+    <a href="#" className={`inline-flex flex-col ${className}`}>
+      <span className={`font-serif font-light uppercase ${sizes[size]}`}>
+        Anastasiia
+      </span>
+      <span className={`font-serif font-light uppercase ${sizes[size]} -mt-1`}>
+        Savchenko
       </span>
     </a>
-  );
-}
-
-export function EditorialMark({ className = "" }: { className?: string }) {
-  return (
-    <span
-      className={`inline-block text-[10px] tracking-[0.3em] uppercase text-foreground/30 font-sans ${className}`}
-      aria-hidden
-    >
-      {"--- "}
-    </span>
   );
 }

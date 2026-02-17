@@ -71,39 +71,39 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-foreground/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-foreground/30 backdrop-blur-sm"
         onClick={onClose}
         aria-hidden
       />
 
-      {/* Modal */}
+      {/* Modal -- warm paper background */}
       <div className="relative bg-background w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto p-10 md:p-14">
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 text-foreground/30 hover:text-foreground transition-colors"
+          className="absolute top-6 right-6 text-muted-foreground hover:text-foreground transition-colors"
           aria-label="Close"
         >
-          <X size={18} strokeWidth={1} />
+          <X size={18} strokeWidth={1.2} />
         </button>
 
-        <h2 className="font-serif text-3xl mb-2">{product.title}</h2>
-        <p className="text-sm text-foreground/40 mb-10">
+        <h2 className="font-serif text-3xl font-light mb-2">{product.title}</h2>
+        <p className="text-sm text-muted-foreground mb-10">
           {formatPrice(product.price, product.currency)}
         </p>
 
         {/* Step: Select slot */}
         {step === "slots" && (
           <div>
-            <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-6">
-              Оберіть час
+            <h3 className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-6">
+              Оберiть час
             </h3>
             {loading ? (
               <div className="flex items-center justify-center py-10">
-                <Loader2 size={18} className="animate-spin text-foreground/30" />
+                <Loader2 size={18} className="animate-spin text-muted-foreground" />
               </div>
             ) : slots.length === 0 ? (
-              <p className="text-sm text-foreground/40 py-6">
-                Немає доступних слотів. Зверніться через контакти.
+              <p className="text-sm text-muted-foreground py-6">
+                Немає доступних слотiв. Звернiться через контакти.
               </p>
             ) : (
               <div className="flex flex-col gap-2 mb-8">
@@ -113,8 +113,8 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
                     onClick={() => setSelectedSlot(slot.id)}
                     className={`flex items-center justify-between p-4 border text-sm transition-colors text-left ${
                       selectedSlot === slot.id
-                        ? "border-foreground bg-foreground/5"
-                        : "border-foreground/10 hover:border-foreground/30"
+                        ? "border-foreground bg-muted"
+                        : "border-border hover:border-accent"
                     }`}
                   >
                     <span>{formatDate(slot.startAt)}</span>
@@ -128,9 +128,9 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
             {selectedSlot && (
               <button
                 onClick={() => setStep("form")}
-                className="w-full bg-foreground text-background py-4 text-[10px] uppercase tracking-[0.2em] transition-opacity hover:opacity-80"
+                className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground"
               >
-                Далі
+                Далi
               </button>
             )}
           </div>
@@ -139,25 +139,29 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
         {/* Step: Form */}
         {step === "form" && (
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <h3 className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 mb-1">
-              Ваші дані
+            <h3 className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-1">
+              Вашi данi
             </h3>
 
             <label className="flex flex-col gap-2">
-              <span className="text-[10px] uppercase tracking-[0.15em] text-foreground/40">{"Ім'я *"}</span>
+              <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+                {"Iм'я *"}
+              </span>
               <input
                 required
                 value={formData.name}
                 onChange={(e) =>
                   setFormData((p) => ({ ...p, name: e.target.value }))
                 }
-                className="border border-foreground/10 px-4 py-3.5 text-sm bg-background focus:outline-none focus:border-foreground transition-colors"
-                placeholder="Анастасія"
+                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-colors"
+                placeholder="Анастасiя"
               />
             </label>
 
             <label className="flex flex-col gap-2">
-              <span className="text-[10px] uppercase tracking-[0.15em] text-foreground/40">Телефон *</span>
+              <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+                Телефон *
+              </span>
               <input
                 required
                 type="tel"
@@ -165,50 +169,54 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
                 onChange={(e) =>
                   setFormData((p) => ({ ...p, phone: e.target.value }))
                 }
-                className="border border-foreground/10 px-4 py-3.5 text-sm bg-background focus:outline-none focus:border-foreground transition-colors"
+                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-colors"
                 placeholder="+380..."
               />
             </label>
 
             <label className="flex flex-col gap-2">
-              <span className="text-[10px] uppercase tracking-[0.15em] text-foreground/40">Telegram</span>
+              <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+                Telegram
+              </span>
               <input
                 value={formData.telegram}
                 onChange={(e) =>
                   setFormData((p) => ({ ...p, telegram: e.target.value }))
                 }
-                className="border border-foreground/10 px-4 py-3.5 text-sm bg-background focus:outline-none focus:border-foreground transition-colors"
+                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-colors"
                 placeholder="@username"
               />
             </label>
 
             <label className="flex flex-col gap-2">
-              <span className="text-[10px] uppercase tracking-[0.15em] text-foreground/40">Email</span>
+              <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+                Email
+              </span>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) =>
                   setFormData((p) => ({ ...p, email: e.target.value }))
                 }
-                className="border border-foreground/10 px-4 py-3.5 text-sm bg-background focus:outline-none focus:border-foreground transition-colors"
+                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-colors"
                 placeholder="email@example.com"
               />
             </label>
 
-            <div className="flex gap-3 mt-4">
+            <div className="flex items-center gap-8 mt-4">
               <button
                 type="button"
                 onClick={() => setStep("slots")}
-                className="flex-1 border border-foreground/10 py-4 text-[10px] uppercase tracking-[0.15em] text-foreground/50 hover:border-foreground/30 hover:text-foreground transition-colors"
+                className="hover-line text-[11px] uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
               >
                 Назад
               </button>
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-1 bg-foreground text-background py-4 text-[10px] uppercase tracking-[0.2em] disabled:opacity-40 transition-opacity hover:opacity-80"
+                className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground disabled:opacity-40"
               >
-                {submitting ? "Відправка..." : "Записатись"}
+                {submitting ? "Вiдправка..." : "Записатись"}
               </button>
             </div>
           </form>
@@ -217,16 +225,14 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
         {/* Step: Success */}
         {step === "success" && (
           <div className="text-center py-12">
-            <div className="w-14 h-14 mx-auto mb-8 flex items-center justify-center border border-foreground/15">
-              <Check size={18} strokeWidth={1} />
-            </div>
-            <h3 className="font-serif text-2xl mb-3">Дякуємо!</h3>
-            <p className="text-sm text-foreground/40 mb-10 leading-relaxed">
+            <div className="w-10 h-px bg-accent mx-auto mb-8" />
+            <h3 className="font-serif text-2xl font-light mb-3">Дякуємо!</h3>
+            <p className="text-sm text-muted-foreground mb-10 leading-relaxed">
               {"Ваше бронювання прийнято. Ми зв'яжемось з вами найближчим часом."}
             </p>
             <button
               onClick={onClose}
-              className="border border-foreground/10 px-12 py-4 text-[10px] uppercase tracking-[0.2em] text-foreground/50 hover:text-foreground hover:border-foreground/30 transition-colors"
+              className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground"
             >
               Закрити
             </button>
