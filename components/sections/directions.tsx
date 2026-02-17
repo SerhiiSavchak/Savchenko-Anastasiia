@@ -1,4 +1,4 @@
-import { Monitor, MapPin } from "lucide-react";
+import { Monitor, MapPin, ArrowRight } from "lucide-react";
 
 const directions = [
   {
@@ -21,41 +21,39 @@ const directions = [
 
 export function Directions() {
   return (
-    <section id="directions" className="py-28 md:py-40">
+    <section id="directions" className="py-28 md:py-44 bg-foreground text-background">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="reveal text-center mb-20">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+          <span className="text-[10px] uppercase tracking-[0.35em] text-background/40">
             Формати
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light mt-4">
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl mt-5">
             Напрямки роботи
           </h2>
         </div>
 
-        <div className="reveal grid grid-cols-1 md:grid-cols-2 gap-px bg-foreground/10">
-          {directions.map((dir) => (
+        <div className="reveal">
+          {directions.map((dir, i) => (
             <a
               key={dir.filter}
               href="#products"
-              className="group flex flex-col p-10 md:p-14 bg-background transition-colors hover:bg-muted"
+              className="group flex flex-col md:flex-row md:items-center gap-6 md:gap-12 py-12 md:py-16 transition-opacity hover:opacity-70"
+              style={i > 0 ? { borderTop: "1px solid rgba(255,255,255,0.1)" } : undefined}
             >
-              <div className="flex items-start justify-between mb-10">
-                <span className="font-serif text-3xl md:text-4xl font-light text-foreground/15">
-                  {dir.number}
-                </span>
-                <dir.icon
-                  size={24}
-                  className="text-foreground/30 group-hover:text-accent transition-colors"
-                  strokeWidth={1}
-                />
+              <span className="font-serif text-4xl md:text-5xl text-background/15 md:w-20 shrink-0">
+                {dir.number}
+              </span>
+
+              <div className="flex items-center gap-4 md:w-48 shrink-0">
+                <dir.icon size={20} strokeWidth={1} className="text-background/40" />
+                <h3 className="font-serif text-3xl md:text-4xl">{dir.title}</h3>
               </div>
-              <h3 className="font-serif text-3xl md:text-4xl font-light mb-4">{dir.title}</h3>
-              <p className="text-muted-foreground leading-relaxed text-base flex-1">
+
+              <p className="text-background/50 leading-relaxed text-base flex-1">
                 {dir.description}
               </p>
-              <span className="mt-8 hover-line text-xs uppercase tracking-[0.2em] text-foreground/60 group-hover:text-foreground transition-colors self-start">
-                Переглянути послуги
-              </span>
+
+              <ArrowRight size={18} strokeWidth={1} className="text-background/20 group-hover:text-background/60 transition-colors shrink-0 hidden md:block" />
             </a>
           ))}
         </div>

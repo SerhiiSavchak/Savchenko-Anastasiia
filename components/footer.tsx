@@ -1,23 +1,22 @@
-import { BrandLogo, Signature } from "@/components/brand-logo";
+import { BrandLogo } from "@/components/brand-logo";
 import { navigation } from "@/lib/config/site";
 
 export function Footer() {
   return (
-    <footer className="border-t border-foreground/10 pt-16 pb-10">
+    <footer className="pt-20 pb-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        {/* Top row */}
-        <div className="flex flex-col md:flex-row items-start justify-between gap-10 mb-16">
-          <div className="flex flex-col gap-4">
-            <BrandLogo size="md" />
-            <Signature className="ml-1" />
-          </div>
+        <div className="editorial-divider mb-16" />
 
-          <nav className="flex flex-wrap gap-x-8 gap-y-3" aria-label="Footer navigation">
+        {/* Top row */}
+        <div className="flex flex-col md:flex-row items-start justify-between gap-12 mb-20">
+          <BrandLogo size="md" />
+
+          <nav className="flex flex-wrap gap-x-10 gap-y-3" aria-label="Footer navigation">
             {navigation.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="hover-line text-xs uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
+                className="hover-line text-[11px] uppercase tracking-[0.2em] text-foreground/40 transition-colors hover:text-foreground"
               >
                 {item.label}
               </a>
@@ -26,12 +25,11 @@ export function Footer() {
         </div>
 
         {/* Bottom row */}
-        <div className="h-px bg-foreground/10 mb-6" />
         <div className="flex flex-col md:flex-row items-center justify-between gap-2">
-          <span className="text-xs text-muted-foreground tracking-wide">
+          <span className="text-[11px] text-foreground/30 tracking-[0.1em]">
             {new Date().getFullYear()} Усі права захищено
           </span>
-          <span className="text-xs text-muted-foreground/50 tracking-wide">
+          <span className="text-[11px] text-foreground/20 tracking-[0.1em]">
             Kyiv, Ukraine
           </span>
         </div>
