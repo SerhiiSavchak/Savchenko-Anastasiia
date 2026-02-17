@@ -131,3 +131,41 @@ body {
   50% { transform: translateY(-6px); }
 }
 
+/* ── First-load loader ── */
+.loader-text {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: loaderTextReveal 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s forwards;
+}
+@keyframes loaderTextReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.loader-line {
+  position: relative;
+  width: 120px;
+  height: 1px;
+  background: var(--color-muted-foreground);
+  overflow: hidden;
+  opacity: 0;
+  animation: loaderLineFadeIn 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0.35s forwards;
+}
+.loader-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-foreground);
+  animation: loaderLineDraw 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.5s forwards;
+}
+@keyframes loaderLineFadeIn {
+  to { opacity: 1; }
+}
+@keyframes loaderLineDraw {
+  to { width: 100%; }
+}
+

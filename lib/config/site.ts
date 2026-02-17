@@ -19,8 +19,8 @@ export const expertiseStats: ExpertiseStat[] = [
 ];
 
 export const contacts: ContactInfo = {
-  telegram: "https://t.me/anastasiia_savchenko",
-  instagram: "https://instagram.com/anastasiia_savchenko",
+  telegram: "https://t.me/anastasia_savchenko",
+  instagram: "https://instagram.com/anastasia_savchenko",
   phone: "+380 XX XXX XX XX",
   email: "hello@savchenko.com",
 };

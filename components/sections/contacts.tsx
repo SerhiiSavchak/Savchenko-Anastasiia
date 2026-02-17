@@ -32,7 +32,7 @@ const contactItems = [
   {
     label: "Telegram",
     value: contacts.telegram,
-    displayValue: "@anastasiia_savchenko",
+    displayValue: "@anastasia_savchenko",
     href: contacts.telegram,
     icon: Send,
     copyable: false,
@@ -40,7 +40,7 @@ const contactItems = [
   {
     label: "Instagram",
     value: contacts.instagram,
-    displayValue: "@anastasiia_savchenko",
+    displayValue: "@anastasia_savchenko",
     href: contacts.instagram,
     icon: Instagram,
     copyable: false,

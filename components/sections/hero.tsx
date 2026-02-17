@@ -13,11 +13,12 @@ export function Hero({ featuredVIP }: HeroProps) {
     <section className="hero-section relative min-h-[100dvh] md:min-h-screen pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12 h-full flex flex-col">
         {/* Quiet nav label row on top */}
-        <div className="hero-headline flex items-center gap-6 mb-6 md:mb-16 flex-shrink-0">
-          <span className="text-[10px] uppercase tracking-[0.35em] text-muted-foreground/70">
+        <div className="hero-headline flex flex-col md:flex-row md:items-center gap-2 md:gap-6 mb-6 md:mb-16 flex-shrink-0">
+          <span className="text-[8px] md:text-[10px] uppercase tracking-[0.35em] text-muted-foreground/70 order-first">
             {siteConfig.tagline}
           </span>
-          <span className="text-muted-foreground/30">—</span>
+          <span className="hidden md:inline text-muted-foreground/30">—</span>
+          <div className="flex items-center gap-6">
           <a
             href="#products"
             className="hover-line text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 hover:text-foreground transition-colors"
@@ -36,13 +37,14 @@ export function Hero({ featuredVIP }: HeroProps) {
           >
             Контакти
           </a>
+          </div>
         </div>
 
         {/* Mobile: double image composition + text below (no overlap) — all in first viewport */}
         <div className="md:hidden flex-1 flex flex-col min-h-0 relative -mx-6 overflow-hidden">
           {/* Image block — main right, secondary overlapping left */}
           <div className="relative w-full h-[55vh] min-h-[200px] flex-shrink-0">
-            <div className="hero-image hero-image-main absolute right-0 top-0 w-[78%] h-full overflow-hidden">
+            <div className="hero-image hero-image-main absolute right-6 top-0 w-[78%] h-full overflow-hidden">
               <Image
                 src="/images/hero-bg.jpg"
                 alt=""
