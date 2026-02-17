@@ -46,7 +46,7 @@ export function ProductDetailModal({
       >
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 z-10 text-muted-foreground hover:text-foreground transition-colors"
+          className="absolute top-6 right-6 z-10 text-muted-foreground hover:text-foreground transition-colors duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:scale-110"
           aria-label="Закрити"
         >
           <X size={18} strokeWidth={1.2} />
@@ -90,10 +90,10 @@ export function ProductDetailModal({
                 href={product.telegramBotUrl ?? "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover-line inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-foreground border border-foreground px-6 py-3 transition-colors hover:bg-foreground hover:text-background"
+                className="hover-line btn-hover inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-foreground border border-foreground px-6 py-3 transition-colors hover:bg-foreground hover:text-background group/btn"
               >
                 Перейти в Telegram
-                <ArrowUpRight size={12} strokeWidth={1.2} />
+                <ArrowUpRight size={12} strokeWidth={1.2} className="transition-transform duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
               </a>
             ) : (
               <button
@@ -101,7 +101,7 @@ export function ProductDetailModal({
                   onClose();
                   onBook(product);
                 }}
-                className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground border border-foreground px-6 py-3 transition-colors hover:bg-foreground hover:text-background"
+                className="hover-line btn-hover text-[11px] uppercase tracking-[0.18em] text-foreground border border-foreground px-6 py-3 transition-colors hover:bg-foreground hover:text-background"
               >
                 Записатись
               </button>

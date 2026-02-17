@@ -16,7 +16,6 @@ const mainTabs: { key: MainFilter; label: string }[] = [
 ];
 
 const onlineSubChips: { key: OnlineSubFilter; label: string }[] = [
-  { key: "all", label: "Усi" },
   { key: "calls", label: "Онлайн-дзвiнки" },
   { key: "video", label: "Вiдеоуроки" },
 ];
@@ -61,7 +60,11 @@ export function Products({ products }: ProductsProps) {
   const filtered = useMemo(() => {
     return products.filter((p) => {
       if (!matchesMainFilter(p, mainFilter)) return false;
-      if (mainFilter === "online" && !matchesOnlineSubFilter(p, onlineSubFilter))
+      if (
+        (mainFilter === "all" || mainFilter === "online") &&
+        onlineSubFilter !== "all" &&
+        !matchesOnlineSubFilter(p, onlineSubFilter)
+      )
         return false;
       if (activeTag && p.directionTag !== activeTag) return false;
       return true;
@@ -72,7 +75,7 @@ export function Products({ products }: ProductsProps) {
     <section id="products" className="py-32 md:py-44">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="reveal">
-          <span className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
+          <span className="section-label">
             Каталог
           </span>
           <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light mt-5 mb-12">
@@ -80,19 +83,20 @@ export function Products({ products }: ProductsProps) {
           </h2>
         </div>
 
-        {/* Main filter tabs */}
-        <div className="reveal flex flex-wrap items-center gap-6 mb-4">
+        {/* Main filter tabs — primary level */}
+        <div className="reveal flex flex-wrap items-center gap-6 mb-6">
           {mainTabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => {
                 setMainFilter(tab.key);
                 setActiveTag(null);
+                if (tab.key !== "online") setOnlineSubFilter("all");
               }}
-              className={`text-[11px] uppercase tracking-[0.18em] transition-colors border-b-2 border-transparent pb-1 ${
+              className={`text-[11px] uppercase tracking-[0.18em] transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] border-b-2 border-transparent pb-1 ${
                 mainFilter === tab.key
                   ? "text-foreground border-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:-translate-y-px"
               }`}
             >
               {tab.label}
@@ -100,17 +104,19 @@ export function Products({ products }: ProductsProps) {
           ))}
         </div>
 
-        {/* Online sub-filter (chips) — only when mainFilter is online */}
-        {mainFilter === "online" && (
-          <div className="reveal flex flex-wrap items-center gap-3 mb-8">
+        {/* Subcategories: Онлайн-дзвiнки | Вiдеоуроки — secondary, chip style */}
+        {(mainFilter === "all" || mainFilter === "online") && (
+          <div className="reveal flex flex-wrap items-center gap-3 mb-6 md:ml-4 md:border-l md:border-border md:pl-6">
             {onlineSubChips.map((chip) => (
               <button
                 key={chip.key}
-                onClick={() => setOnlineSubFilter(chip.key)}
-                className={`text-[10px] uppercase tracking-[0.15em] transition-colors px-3 py-1.5 ${
+                onClick={() =>
+                  setOnlineSubFilter(onlineSubFilter === chip.key ? "all" : chip.key)
+                }
+                className={`text-[10px] uppercase tracking-[0.12em] transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] px-3 py-1.5 border ${
                   onlineSubFilter === chip.key
-                    ? "text-foreground border border-foreground"
-                    : "text-muted-foreground/70 border border-transparent hover:text-foreground hover:border-border"
+                    ? "text-foreground border-foreground bg-foreground/5"
+                    : "text-muted-foreground/80 border-border hover:text-foreground hover:border-foreground/50 hover:-translate-y-px"
                 }`}
               >
                 {chip.label}
@@ -119,19 +125,19 @@ export function Products({ products }: ProductsProps) {
           </div>
         )}
 
-        {/* Direction tags — optional, compact */}
+        {/* Direction tags — tertiary, subtle chips */}
         {tags.length > 0 && (
-          <div className="reveal flex flex-wrap items-center gap-3 mb-12">
+          <div className="reveal flex flex-wrap items-center gap-2 mb-12 md:ml-4 md:border-l md:border-border md:pl-6">
             {tags.map((tag) => (
               <button
                 key={tag}
                 onClick={() =>
                   setActiveTag(activeTag === tag ? null : tag)
                 }
-                className={`text-[10px] uppercase tracking-[0.12em] transition-colors ${
+                className={`text-[10px] uppercase tracking-[0.1em] transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] px-2.5 py-1 border ${
                   activeTag === tag
-                    ? "text-foreground"
-                    : "text-muted-foreground/60 hover:text-foreground"
+                    ? "text-foreground border-accent/60 bg-accent/5"
+                    : "text-muted-foreground/70 border-border/50 hover:text-foreground hover:border-border hover:-translate-y-px"
                 }`}
               >
                 {tag}

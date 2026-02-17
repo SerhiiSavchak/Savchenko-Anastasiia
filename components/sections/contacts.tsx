@@ -16,7 +16,7 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="ml-3 text-muted-foreground/40 hover:text-foreground transition-colors"
+      className="ml-3 text-muted-foreground/40 hover:text-foreground transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:scale-110"
       aria-label={`Copy ${text}`}
     >
       {copied ? (
@@ -67,10 +67,10 @@ export function Contacts() {
   return (
     <section id="contacts" className="py-32 md:py-44">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <div className="reveal flex flex-col md:flex-row gap-16 md:gap-24">
+        <div className="flex flex-col md:flex-row gap-16 md:gap-24">
           {/* Left: heading */}
-          <div className="md:w-2/5 shrink-0">
-            <span className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
+          <div className="reveal md:w-2/5 shrink-0">
+            <span className="section-label">
               Контакти
             </span>
             <h2 className="font-serif text-4xl md:text-5xl font-light mt-5 leading-[1.1]">
@@ -93,12 +93,11 @@ export function Contacts() {
                     ? "noopener noreferrer"
                     : undefined
                 }
-                className="group flex items-center gap-5 py-6 transition-colors hover:text-foreground"
-                style={
-                  i > 0
-                    ? { borderTop: "1px solid var(--color-border)" }
-                    : undefined
-                }
+                className="reveal group flex items-center gap-5 py-6 transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:text-foreground hover:translate-x-1"
+                style={{
+                  transitionDelay: `${i * 80}ms`,
+                  ...(i > 0 ? { borderTop: "1px solid var(--color-border)" } : {}),
+                }}
               >
                 <item.icon
                   size={16}

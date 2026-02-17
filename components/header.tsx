@@ -19,7 +19,7 @@ export function Header() {
             <a
               key={item.href}
               href={item.href}
-              className="hover-line text-[11px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
+              className="hover-line text-[11px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground"
             >
               {item.label}
             </a>
@@ -28,7 +28,7 @@ export function Header() {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden text-foreground"
+          className="md:hidden text-foreground transition-transform duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:scale-105 active:scale-95"
           onClick={() => setOpen(!open)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
@@ -45,7 +45,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="text-sm tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
+                className="text-sm tracking-[0.1em] text-muted-foreground hover:text-foreground transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:translate-x-0.5"
               >
                 {item.label}
               </a>

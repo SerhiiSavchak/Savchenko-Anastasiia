@@ -9,7 +9,7 @@ export function Expertise() {
           {/* Asymmetric layout: label left, stats scattered right */}
           <div className="flex flex-col md:flex-row gap-16 md:gap-24">
             <div className="md:w-1/3 shrink-0">
-              <span className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
+              <span className="section-label">
                 Досвiд
               </span>
               <h2 className="font-serif text-4xl md:text-5xl font-light mt-5 leading-[1.1]">
@@ -24,7 +24,8 @@ export function Expertise() {
               {expertiseStats.map((stat, i) => (
                 <div
                   key={stat.label}
-                  className={`${i % 2 !== 0 ? "md:mt-12" : ""}`}
+                  className={`reveal ${i % 2 !== 0 ? "md:mt-12" : ""}`}
+                  style={{ transitionDelay: `${i * 80}ms` }}
                 >
                   <StatCount
                     value={stat.value}

@@ -33,7 +33,7 @@ export function ProductCard({
   return (
     <article
       onClick={handleCardClick}
-      className="group cursor-pointer flex flex-col"
+      className="group cursor-pointer flex flex-col card-hover"
     >
       {/* Image — editorial catalog cover */}
       <div className="relative aspect-[4/5] overflow-hidden mb-4">
@@ -41,7 +41,7 @@ export function ProductCard({
           src={product.coverImage}
           alt={product.title}
           fill
-          className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+          className="object-cover img-hover"
           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       </div>
@@ -51,7 +51,7 @@ export function ProductCard({
         <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
           {typeLabels[product.type]}
         </span>
-        <h3 className="font-serif text-xl md:text-2xl font-light mt-2 mb-2 leading-snug group-hover:text-accent transition-colors">
+        <h3 className="font-serif text-xl md:text-2xl font-light mt-2 mb-2 leading-snug group-hover:text-accent transition-colors duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]">
           {product.title}
         </h3>
         <p
@@ -80,7 +80,7 @@ export function ProductCard({
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="hover-line text-[11px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors self-start mt-auto"
+            className="hover-line text-[11px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground self-start mt-auto"
           >
             Перейти в Telegram
           </a>
