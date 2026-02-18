@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { VIPItem } from "@/types";
 import { FlowAnchor } from "@/components/FlowLine";
+import { EditorialStackReveal } from "@/components/editorial-stack-reveal";
 
 const formatLabels: Record<string, string> = {
   offline: "Офлайн",
@@ -35,18 +36,26 @@ export function VIPSection({ items }: VIPSectionProps) {
         {/* Featured story layout: big image + text, magazine spread */}
         <div className="flex flex-col gap-32 md:gap-40">
           {items.map((item, i) => (
-            <article key={item.id} className="group relative reveal" style={{ transitionDelay: `${i * 120}ms` }}>
+            <article key={item.id} className="group relative">
               {/* Large hero image for the story */}
-              <div
+              <EditorialStackReveal
                 className={`flex flex-col ${
                   i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
                 } gap-10 md:gap-0`}
+                variant="magazine"
+                duration="1150ms"
               >
-                {/* Image takes up most of the width */}
+                {/* Image slides in from side */}
                 <div
-                  className={`md:w-[60%] ${
+                  className={`stack-layer stack-layer-vip-image md:w-[60%] ${
                     i % 2 === 0 ? "md:-mr-12" : "md:-ml-12"
                   } relative z-0`}
+                  style={
+                    {
+                      "--d": "0ms",
+                      "--vip-x": i % 2 === 0 ? "-56px" : "56px",
+                    } as React.CSSProperties
+                  }
                 >
                   <div className="overflow-hidden">
                     <Image
@@ -54,7 +63,7 @@ export function VIPSection({ items }: VIPSectionProps) {
                       alt={item.title}
                       width={800}
                       height={560}
-                      className="w-full object-cover aspect-[4/3] img-hover"
+                      className="w-full object-cover aspect-[4/3]"
                       sizes="(max-width: 768px) 100vw, 60vw"
                     />
                   </div>
@@ -65,13 +74,14 @@ export function VIPSection({ items }: VIPSectionProps) {
                   </p>
                 </div>
 
-                {/* Content overlaps image slightly on desktop */}
+                {/* Card rises from bottom with bounce */}
                 <div
-                  className={`md:w-[45%] relative z-10 ${
+                  className={`stack-layer stack-layer-vip-card md:w-[45%] relative z-10 ${
                     i % 2 === 0 ? "md:-ml-8" : "md:-mr-8"
                   } md:pt-16 lg:pt-24`}
+                  style={{ "--d": "180ms" } as React.CSSProperties}
                 >
-                  <div className="bg-card md:p-12 lg:p-16">
+                  <div className="bg-card md:p-12 lg:p-14">
                     <div className="flex items-center gap-3 mb-5">
                       <span className="text-[10px] uppercase tracking-[0.25em] text-accent">
                         {item.type === "retreat" ? "Ретрит" : "Менторинг"}
@@ -82,10 +92,10 @@ export function VIPSection({ items }: VIPSectionProps) {
                       </span>
                     </div>
 
-                    <h3 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light mb-6 leading-[1.1] text-balance">
+                    <h3 className="font-serif text-2xl md:text-3xl font-light mb-4 leading-[1.1] text-balance">
                       {item.title}
                     </h3>
-                    <p className="text-muted-foreground leading-[1.8] text-[15px] mb-6">
+                    <p className="text-muted-foreground leading-[1.8] text-[15px] md:text-base mb-6">
                       {item.shortDescription}
                     </p>
 
@@ -97,13 +107,13 @@ export function VIPSection({ items }: VIPSectionProps) {
 
                     <a
                       href="#contacts"
-                      className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground inline-flex items-center gap-1"
+                      className="btn-hover cursor-pointer text-[11px] uppercase tracking-[0.18em] text-foreground border border-foreground px-4 py-2 inline-flex items-center gap-1 transition-colors hover:bg-foreground hover:text-background"
                     >
                       {item.callToActionLabel}
                     </a>
                   </div>
                 </div>
-              </div>
+              </EditorialStackReveal>
             </article>
           ))}
         </div>

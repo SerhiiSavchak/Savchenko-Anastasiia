@@ -2,6 +2,7 @@ import Image from "next/image";
 import { siteConfig } from "@/lib/config/site";
 import type { VIPItem } from "@/types";
 import { FlowAnchor } from "@/components/FlowLine";
+import { EditorialStackReveal } from "@/components/editorial-stack-reveal";
 
 interface HeroProps {
   featuredVIP?: VIPItem;
@@ -47,10 +48,21 @@ export function Hero({ featuredVIP }: HeroProps) {
         {/* Mobile: double image composition + text below (no overlap) — all in first viewport */}
         <div className="md:hidden flex-1 flex flex-col min-h-0 relative -mx-6 overflow-hidden">
           {/* Image block — main right, secondary overlapping left */}
-          <div className="relative w-full h-[55vh] min-h-[200px] flex-shrink-0">
-            <div className="hero-image hero-image-main absolute right-6 top-0 w-[78%] h-full overflow-hidden">
+          <EditorialStackReveal className="relative w-full h-[55vh] min-h-[200px] flex-shrink-0" duration="750ms" delay={700}>
+            <div
+              className="stack-layer absolute right-6 top-0 w-[78%] h-full overflow-hidden"
+              style={
+                {
+                  "--d": "0ms",
+                  "--x": "-28px",
+                  "--y": "22px",
+                  "--r": "1deg",
+                  "--s": "0.97",
+                } as React.CSSProperties
+              }
+            >
               <Image
-                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=85"
+                src="/images/hero-main.png"
                 alt=""
                 fill
                 priority
@@ -58,16 +70,27 @@ export function Hero({ featuredVIP }: HeroProps) {
                 sizes="100vw"
               />
             </div>
-            <div className="hero-image hero-image-secondary absolute bottom-0 left-0 w-[38%] aspect-[3/4] overflow-hidden z-10 -translate-y-3 translate-x-2">
+            <div
+              className="stack-layer absolute bottom-0 left-0 w-[38%] aspect-[3/4] overflow-hidden z-10 -translate-y-3 translate-x-2"
+              style={
+                {
+                  "--d": "120ms",
+                  "--x": "20px",
+                  "--y": "-18px",
+                  "--r": "-1.2deg",
+                  "--s": "1.03",
+                } as React.CSSProperties
+              }
+            >
               <Image
-                src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=85"
+                src="/images/hero-secondary.png"
                 alt=""
                 fill
                 className="object-cover"
                 sizes="50vw"
               />
             </div>
-          </div>
+          </EditorialStackReveal>
           {/* Text block — below images, higher z-index, adapted for mobile */}
           <div className="hero-headline hero-delay-1 relative z-20 flex-shrink-0 px-6 pt-4 pb-2 min-w-0">
             <h1 className="font-serif text-2xl leading-[1.15] font-light text-balance break-words">
@@ -122,10 +145,21 @@ export function Hero({ featuredVIP }: HeroProps) {
           </div>
 
           {/* Right: Editorial image composition — 2 images with slight offsets */}
-          <div className="relative w-[50%] min-h-[400px] lg:min-h-[500px]">
-            <div className="hero-image hero-image-main absolute right-0 top-0 w-[85%] aspect-[4/5] overflow-hidden">
+          <EditorialStackReveal className="relative w-[50%] min-h-[400px] lg:min-h-[500px]" duration="800ms" delay={700}>
+            <div
+              className="stack-layer stack-layer-drift absolute right-0 top-0 w-[85%] aspect-[4/5] overflow-hidden"
+              style={
+                {
+                  "--d": "0ms",
+                  "--x": "-28px",
+                  "--y": "22px",
+                  "--r": "1deg",
+                  "--s": "0.97",
+                } as React.CSSProperties
+              }
+            >
               <Image
-                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=85"
+                src="/images/hero-main.png"
                 alt=""
                 fill
                 priority
@@ -133,9 +167,20 @@ export function Hero({ featuredVIP }: HeroProps) {
                 sizes="45vw"
               />
             </div>
-            <div className="hero-image hero-image-secondary absolute bottom-0 left-0 w-[45%] aspect-[3/4] overflow-hidden z-10 -translate-y-8 translate-x-4">
+            <div
+              className="stack-layer absolute bottom-0 left-0 w-[45%] aspect-[3/4] overflow-hidden z-10 -translate-y-8 translate-x-4"
+              style={
+                {
+                  "--d": "140ms",
+                  "--x": "20px",
+                  "--y": "-18px",
+                  "--r": "-1.2deg",
+                  "--s": "1.03",
+                } as React.CSSProperties
+              }
+            >
               <Image
-                src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=85"
+                src="/images/hero-secondary.png"
                 alt=""
                 fill
                 className="object-cover"
@@ -145,7 +190,7 @@ export function Hero({ featuredVIP }: HeroProps) {
             <p className="img-caption mt-4 ml-[48%]">
               Фото з ретриту в Карпатах
             </p>
-          </div>
+          </EditorialStackReveal>
         </div>
 
         {/* Featured VIP teaser — editorial block */}

@@ -15,7 +15,7 @@ const directions = [
   {
     title: "Офлайн",
     description:
-      "Очнi практики та груповi заняття у Києвi. Жива енергiя та iндивiдуальний пiдхiд.",
+      "Очнi практики та груповi заняття у Львові. Жива енергiя та iндивiдуальний пiдхiд.",
     coverImage: "/images/placeholder-3.jpg",
     caption: "Очна практика",
   },
@@ -80,11 +80,11 @@ export function Directions() {
                     i % 2 === 0 ? "md:pl-0" : "md:pr-0"
                   }`}
                 >
-                  <div className="space-y-5">
-                    <h3 className="article-reveal-line font-serif text-3xl md:text-4xl lg:text-5xl font-light leading-[1.1] group-hover:text-accent pb-1">
+                  <div className="space-y-4">
+                    <h3 className="article-reveal-line font-serif text-2xl md:text-3xl font-light leading-[1.1] group-hover:text-accent pb-1">
                       {dir.title}
                     </h3>
-                    <p className="text-muted-foreground leading-[1.8] text-[15px] max-w-prose translate-y-0.5 opacity-90 group-hover:opacity-100 transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:translate-y-0">
+                    <p className="text-muted-foreground leading-[1.8] text-[15px] md:text-base max-w-prose translate-y-0.5 opacity-90 group-hover:opacity-100 transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:translate-y-0">
                       {dir.description}
                     </p>
                     <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground group-hover:text-foreground">

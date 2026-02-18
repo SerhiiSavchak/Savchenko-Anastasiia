@@ -34,9 +34,11 @@
 /* ── Base ── */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
+  overflow-x: hidden;
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
@@ -104,6 +106,82 @@ body {
   transform: translateX(2px);
 }
 
+/* ── Modal animations (ProductDetailModal) ── */
+@keyframes modal-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modal-overlay-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes modal-content-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+@keyframes modal-content-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+}
+.modal-overlay-enter {
+  opacity: 0;
+  animation: modal-overlay-in 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+.modal-overlay-exit {
+  animation: modal-overlay-out 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+.modal-content-enter {
+  opacity: 0;
+  transform: scale(0.92) translateY(12px);
+  animation: modal-content-in 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+.modal-content-exit {
+  animation: modal-content-out 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* ── Product Detail Modal (responsive layout) ── */
+.product-detail-modal {
+  /* Prevent layout shift; flex children can shrink */
+  contain: layout;
+}
+.product-detail-modal h2,
+.product-detail-modal p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* ── Modal description scroll (thin scrollbar) ── */
+.modal-desc-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+.modal-desc-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-desc-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-desc-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+.modal-desc-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-foreground);
+}
+
 /* ── Card hover (lift + image) ── */
 .card-hover {
   transition: transform var(--duration-hover) var(--ease-editorial);
@@ -114,16 +192,16 @@ body {
 .card-hover .img-hover {
   transition: transform var(--duration-image) var(--ease-editorial);
 }
-.card-hover:hover .img-hover {
-  transform: scale(1.04);
-}
-
 /* ── Image hover (standalone) ── */
 .img-hover {
   transition: transform var(--duration-image) var(--ease-editorial);
 }
 .group:hover .img-hover {
   transform: scale(1.04);
+}
+/* Product cards: lift only, no image scale (directions keep scale) */
+#products .card-hover:hover .img-hover {
+  transform: none;
 }
 
 /* ── Button hover (primary/outline) ── */
@@ -132,12 +210,30 @@ body {
     background-color var(--duration-hover) var(--ease-editorial),
     border-color var(--duration-hover) var(--ease-editorial),
     transform var(--duration-hover) var(--ease-editorial);
+  -webkit-tap-highlight-color: transparent;
 }
 .btn-hover:hover {
   transform: translate(1px, -2px);
 }
 .btn-hover:active {
   transform: translate(0, 0);
+}
+
+/* Products section: ensure fill-on-tap for touch devices (hover doesn't work) */
+#products button,
+#products a.btn-hover {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Products mobile expand/collapse — smooth height transition */
+.products-expand-wrapper {
+  transition: grid-template-rows 500ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .products-expand-wrapper {
+    transition: none;
+  }
 }
 
 /* ── Article preview hover reveal ── */
@@ -193,6 +289,119 @@ body {
   text-transform: uppercase;
   color: var(--color-muted-foreground);
   margin-top: 0.75rem;
+}
+
+/* ── Editorial Stack Reveal (settling-into-place) ── */
+/* Layers start slightly out of position, animate into final layout on in-view */
+.stack-reveal {
+  --stack-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --stack-duration: 650ms;
+}
+
+.stack-layer {
+  --x: 0px;
+  --y: 0px;
+  --r: 0deg;
+  --s: 1;
+  --d: 0ms;
+  opacity: 0;
+  transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(var(--s));
+  transition-property: transform, opacity;
+  transition-duration: var(--stack-duration);
+  transition-delay: var(--d);
+  transition-timing-function: var(--stack-ease);
+}
+
+.stack-reveal-visible .stack-layer {
+  opacity: 1;
+  transform: translate(0, 0) rotate(0) scale(1);
+}
+
+/* Mobile: reduce offsets by ~50% */
+@media (max-width: 768px) {
+  .stack-reveal .stack-layer {
+    --x: calc(var(--x) * 0.5);
+    --y: calc(var(--y) * 0.5);
+    --r: calc(var(--r) * 0.5);
+    --s: calc((var(--s) - 1) * 0.5 + 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-layer {
+    transform: none !important;
+    transition: opacity 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .stack-reveal-visible .stack-layer {
+    opacity: 1;
+  }
+  .stack-layer-drift {
+    animation: none !important;
+  }
+}
+
+/* Optional: subtle drift on main hero image after reveal */
+.stack-layer-drift {
+  animation: none;
+}
+.stack-reveal-visible .stack-layer-drift {
+  animation: heroImageDrift 12s ease-in-out 1s infinite;
+}
+
+/* ── VIP Magazine variant: image slides from side, card rises with bounce ── */
+.stack-reveal-magazine {
+  --stack-duration: 1.15s;
+}
+
+.stack-reveal-magazine .stack-layer-vip-image {
+  --vip-x: -56px;
+  opacity: 0;
+  transform: translateX(var(--vip-x)) scale(0.92);
+  transition: transform var(--stack-duration) cubic-bezier(0.16, 1, 0.3, 1),
+    opacity calc(var(--stack-duration) * 0.9) cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--d);
+}
+
+.stack-reveal-magazine .stack-layer-vip-card {
+  opacity: 0;
+  transform: translateY(44px) scale(0.96);
+  transition: transform var(--stack-duration) cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity calc(var(--stack-duration) * 0.85) cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--d);
+}
+
+.stack-reveal-magazine.stack-reveal-visible .stack-layer-vip-image {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+.stack-reveal-magazine.stack-reveal-visible .stack-layer-vip-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@media (max-width: 768px) {
+  .stack-reveal-magazine .stack-layer-vip-image {
+    --vip-x: calc(var(--vip-x) * 0.6);
+    transform: translateX(var(--vip-x)) scale(0.96);
+  }
+  .stack-reveal-magazine .stack-layer-vip-card {
+    transform: translateY(28px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-reveal-magazine .stack-layer-vip-image,
+  .stack-reveal-magazine .stack-layer-vip-card {
+    transform: none !important;
+    transition: opacity 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .stack-reveal-magazine.stack-reveal-visible .stack-layer-vip-image,
+  .stack-reveal-magazine.stack-reveal-visible .stack-layer-vip-card {
+    opacity: 1;
+  }
 }
 
 /* ── Hero animations ── */
@@ -280,5 +489,226 @@ body {
 }
 @keyframes loaderLineDraw {
   to { width: 100%; }
+}
+
+/* ── Mobile menu overlay (full-screen burger) ── */
+/* Easing: cubic-bezier(0.16, 1, 0.3, 1) — premium ease-out */
+@keyframes mobile-menu-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes mobile-menu-backdrop-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes mobile-menu-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes mobile-menu-panel-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+@keyframes mobile-menu-nav-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-menu-backdrop-enter {
+  animation: mobile-menu-backdrop-in 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.mobile-menu-backdrop-exit {
+  animation: mobile-menu-backdrop-out 320ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.mobile-menu-panel-enter {
+  animation: mobile-menu-panel-in 400ms cubic-bezier(0.16, 1, 0.3, 1) 30ms forwards;
+}
+.mobile-menu-panel-exit {
+  animation: mobile-menu-panel-out 320ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.mobile-menu-nav-item {
+  opacity: 0;
+  animation: mobile-menu-nav-in 360ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.mobile-menu-close-btn {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-backdrop-enter,
+  .mobile-menu-backdrop-exit,
+  .mobile-menu-panel-enter,
+  .mobile-menu-panel-exit,
+  .mobile-menu-nav-item {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+}
+
+/* ── Contacts section (premium staged reveal + line language) ── */
+/* Easing: cubic-bezier(0.16, 1, 0.3, 1) — premium ease-out */
+.contacts-section-inner {
+  --contacts-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --contacts-duration: 380ms;
+}
+
+/* Staged reveal: title first, then items with stagger */
+.contacts-heading {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--contacts-duration) var(--contacts-ease),
+    transform var(--contacts-duration) var(--contacts-ease);
+}
+.contacts-section-visible .contacts-heading {
+  opacity: 1;
+  transform: translateY(0);
+}
+.contacts-section-visible .contacts-heading .section-label::after {
+  width: 5rem;
+}
+
+.contacts-item {
+  opacity: 0;
+  transform: translateY(10px);
+  border-top: 1px solid var(--color-border);
+  transition: opacity var(--contacts-duration) var(--contacts-ease),
+    transform var(--contacts-duration) var(--contacts-ease),
+    border-color var(--duration-hover) var(--ease-editorial);
+  transition-delay: 0ms;
+}
+.contacts-item:first-child {
+  border-top: none;
+}
+.contacts-item:hover {
+  border-color: rgba(28, 27, 25, 0.2);
+}
+.contacts-section-visible .contacts-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+.contacts-section-visible .contacts-item:nth-child(1) { transition-delay: 120ms; }
+.contacts-section-visible .contacts-item:nth-child(2) { transition-delay: 200ms; }
+.contacts-section-visible .contacts-item:nth-child(3) { transition-delay: 280ms; }
+.contacts-section-visible .contacts-item:nth-child(4) { transition-delay: 360ms; }
+
+/* Contact item: line draw on hover/tap */
+.contacts-item-link {
+  position: relative;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.75rem 0;
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--duration-hover) var(--ease-editorial),
+    transform var(--duration-hover) var(--contacts-ease);
+}
+.contacts-item-link:hover,
+.contacts-item-link:focus-visible {
+  color: var(--color-foreground);
+  transform: translateX(3px);
+}
+.contacts-item-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-foreground);
+  transition: width var(--duration-hover) var(--contacts-ease);
+}
+.contacts-item-link:hover::after,
+.contacts-item-link:focus-visible::after,
+.contacts-item-link.contacts-item-active::after {
+  width: 100%;
+}
+.contacts-item-link.contacts-item-active {
+  color: var(--color-foreground);
+}
+
+/* Route line accent (thin vertical line, becomes visible when section active) */
+.contacts-route-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--color-border) 10%,
+    var(--color-border) 90%,
+    transparent 100%
+  );
+  opacity: 0.4;
+  transition: opacity var(--contacts-duration) var(--contacts-ease);
+}
+.contacts-section-visible .contacts-route-line {
+  opacity: 0.7;
+}
+
+/* Copy button in contact items */
+.contacts-copy-btn {
+  flex-shrink: 0;
+  padding: 0.5rem;
+  margin: -0.5rem 0 -0.5rem 0.5rem;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted-foreground);
+  opacity: 0.5;
+  transition: color var(--duration-hover) var(--ease-editorial),
+    opacity var(--duration-hover) var(--ease-editorial),
+    transform var(--duration-hover) var(--ease-editorial);
+  -webkit-tap-highlight-color: transparent;
+}
+.contacts-item-link:hover .contacts-copy-btn,
+.contacts-item-link:focus-visible .contacts-copy-btn,
+.contacts-copy-btn:hover,
+.contacts-copy-btn:focus-visible {
+  color: var(--color-foreground);
+  opacity: 1;
+}
+.contacts-copy-btn:hover {
+  transform: scale(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contacts-heading,
+  .contacts-item {
+    transition: opacity 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .contacts-section-visible .contacts-heading,
+  .contacts-section-visible .contacts-item {
+    opacity: 1;
+    transform: none;
+  }
+  .contacts-item-link::after {
+    transition: none;
+  }
 }
 

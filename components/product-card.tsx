@@ -55,10 +55,11 @@ export function ProductCard({
           {product.title}
         </h3>
         <p
-          className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-4"
+          className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-4 min-h-[2.5rem] overflow-hidden break-words"
           style={{ maxWidth: "60ch" }}
         >
-          {product.shortDescription}
+          {product.shortDescription ||
+            "Практика для відновлення балансу тіла та розуму. Індивідуальний підхід, увага до деталей та підтримка на кожному етапі. Підходить для початківців та досвідчених практиків."}
         </p>
 
         {/* Meta row */}
@@ -73,28 +74,39 @@ export function ProductCard({
           </span>
         </div>
 
-        {/* CTA — text link or minimal button */}
-        {isVideo ? (
-          <a
-            href={product.telegramBotUrl ?? "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="hover-line text-[11px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground self-start mt-auto"
-          >
-            Перейти в Telegram
-          </a>
-        ) : (
+        {/* CTA — buttons with borders */}
+        <div className="flex flex-wrap items-center gap-3 mt-auto">
+          {isVideo ? (
+            <a
+              href={product.telegramBotUrl ?? "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="btn-hover cursor-pointer text-[11px] uppercase tracking-[0.18em] text-foreground border border-foreground px-4 py-2 transition-colors hover:bg-foreground hover:text-background active:bg-foreground active:text-background focus-visible:bg-foreground focus-visible:text-background"
+            >
+              Перейти в Telegram
+            </a>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onBook(product);
+              }}
+              className="btn-hover cursor-pointer text-[11px] uppercase tracking-[0.18em] text-foreground border border-foreground px-4 py-2 transition-colors hover:bg-foreground hover:text-background active:bg-foreground active:text-background focus-visible:bg-foreground focus-visible:text-background"
+            >
+              Записатись
+            </button>
+          )}
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onBook(product);
+              onDetail(product);
             }}
-            className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground self-start mt-auto"
+            className="cursor-pointer text-[11px] uppercase tracking-[0.15em] text-muted-foreground border border-border px-4 py-2 transition-colors hover:text-background hover:border-foreground hover:bg-foreground active:text-background active:border-foreground active:bg-foreground focus-visible:text-background focus-visible:border-foreground focus-visible:bg-foreground"
           >
-            Записатись
+            Деталі
           </button>
-        )}
+        </div>
       </div>
     </article>
   );

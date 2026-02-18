@@ -34,7 +34,7 @@ export function Footer() {
             {new Date().getFullYear()} Усi права захищено
           </span>
           <span className="text-[11px] text-muted-foreground/60 tracking-wide">
-            Kyiv, Ukraine
+            Lviv, Ukraine
           </span>
         </div>
       </div>
