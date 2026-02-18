@@ -32,7 +32,7 @@ export function Hero({ featuredVIP }: HeroProps) {
         {/* Mobile: double image composition + text below (no overlap) — all in first viewport */}
         <div className="md:hidden flex-1 flex flex-col min-h-0 relative -mx-6 overflow-hidden">
           {/* Image block — main right, secondary overlapping left */}
-          <EditorialStackReveal className="relative w-full h-[45vh] min-h-[180px] flex-shrink-0" duration="750ms" delay={700}>
+          <EditorialStackReveal className="relative w-full h-[45vh] min-h-[180px] flex-shrink-0" duration="750ms" delay={200}>
             <div
               className="stack-layer absolute right-6 top-0 w-[92%] h-full overflow-hidden relative"
               style={
@@ -127,7 +127,7 @@ export function Hero({ featuredVIP }: HeroProps) {
           </div>
 
           {/* Right: Editorial image composition — pulled up */}
-          <EditorialStackReveal className="relative w-[50%] min-h-[360px] lg:min-h-[440px] -mt-8 lg:-mt-12" duration="800ms" delay={700}>
+          <EditorialStackReveal className="relative w-[50%] min-h-[360px] lg:min-h-[440px] -mt-8 lg:-mt-12" duration="800ms" delay={200}>
             <div
               className="stack-layer stack-layer-drift absolute right-0 -top-4 lg:-top-8 w-[110%] aspect-[4/5] overflow-hidden relative"
               style={

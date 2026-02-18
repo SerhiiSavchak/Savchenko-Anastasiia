@@ -64,6 +64,18 @@ body {
   transform: translateY(0);
 }
 
+/* ── Product cards: scale + slide reveal ── */
+.reveal-card {
+  opacity: 0;
+  transform: scale(0.96) translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-card.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
 /* ── Hover underline (text-link buttons) ── */
 .hover-line {
   position: relative;

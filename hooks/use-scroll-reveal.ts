@@ -18,11 +18,14 @@ export function useScrollReveal() {
           }
         });
       },
-      { threshold: 0.15 }
+      {
+        threshold: 0.05,
+        rootMargin: "0px 0px 80px 0px",
+      }
     );
 
     const observeAll = () => {
-      const targets = el.querySelectorAll(".reveal:not(.visible)");
+      const targets = el.querySelectorAll(".reveal:not(.visible), .reveal-card:not(.visible)");
       targets.forEach((t) => observer.observe(t));
     };
 

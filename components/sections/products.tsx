@@ -209,7 +209,7 @@ export function Products({ products }: ProductsProps) {
         {/* Card grid — editorial catalog style */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16 lg:gap-20 min-h-[480px]" style={{ overflowAnchor: "none" }}>
           {(showMobileExpand ? visibleProducts : filtered).map((product, i) => (
-            <div key={product.id} className="reveal cursor-pointer" style={{ transitionDelay: `${i * 50}ms` }}>
+            <div key={product.id} className="reveal-card cursor-pointer" style={{ transitionDelay: `${i * 50}ms` }}>
               <ProductCard
                 product={product}
                 onBook={setBookingProduct}
@@ -228,7 +228,7 @@ export function Products({ products }: ProductsProps) {
             <div className="min-h-0 overflow-hidden">
               <div className="grid grid-cols-1 gap-12 pt-0 mt-0">
                 {hiddenProducts.map((product, i) => (
-                  <div key={product.id} className="reveal cursor-pointer" style={{ transitionDelay: `${(MOBILE_LIMIT + i) * 50}ms` }}>
+                  <div key={product.id} className="reveal-card cursor-pointer" style={{ transitionDelay: `${(MOBILE_LIMIT + i) * 50}ms` }}>
                     <ProductCard
                       product={product}
                       onBook={setBookingProduct}
