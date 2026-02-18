@@ -17,18 +17,6 @@ export function Hero({ featuredVIP }: HeroProps) {
         <FlowAnchor id="hero" offsetY={0.5} offsetX={1} />
       </div>
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12 h-full flex flex-col">
-        {/* Quiet nav label row — mobile: top, desktop: inside left column above title */}
-        <div className="hero-headline flex flex-col md:hidden items-start gap-2 mb-4 flex-shrink-0">
-          <span className="text-[8px] uppercase tracking-[0.35em] text-muted-foreground/70">
-            {siteConfig.tagline}
-          </span>
-          <div className="flex items-center gap-6">
-            <a href="#products" className="hover-line text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 hover:text-foreground transition-colors">Послуги</a>
-            <a href="#vip" className="hover-line text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 hover:text-foreground transition-colors">VIP</a>
-            <a href="#contacts" className="hover-line text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 hover:text-foreground transition-colors">Контакти</a>
-          </div>
-        </div>
-
         {/* Mobile: double image composition + text below (no overlap) — all in first viewport */}
         <div className="md:hidden flex-1 flex flex-col min-h-0 relative -mx-6 overflow-hidden">
           {/* Image block — main right, secondary overlapping left */}
@@ -62,8 +50,11 @@ export function Hero({ featuredVIP }: HeroProps) {
               />
             </div>
           </EditorialStackReveal>
-          {/* Text block — below images, higher z-index, adapted for mobile */}
+          {/* Text block — below images, tagline + nav + H1 + subheading, adapted for mobile */}
           <div className="hero-headline hero-delay-1 relative z-20 flex-shrink-0 px-6 pt-3 pb-2 min-w-0">
+            <span className="text-[10px] uppercase tracking-[0.35em] text-muted-foreground/70 block mb-2">
+              {siteConfig.tagline}
+            </span>
             <h1 className="font-serif text-2xl leading-[1.15] font-light text-balance break-words">
               {siteConfig.heroTitle}
             </h1>
@@ -92,15 +83,15 @@ export function Hero({ featuredVIP }: HeroProps) {
         <div className="hidden md:flex flex-row gap-0 min-h-0 flex-1 items-start">
           {/* Left: nav row + H1 + subheading + CTAs */}
           <div className="relative z-10 w-[50%] pr-12 lg:pr-16 flex flex-col justify-center pt-32 lg:pt-36">
-            <div className="hero-headline flex flex-row items-center gap-6 mb-6">
-              <span className="text-[10px] uppercase tracking-[0.35em] text-muted-foreground/70">
+            <div className="hero-headline flex flex-col lg:flex-row lg:flex-wrap items-start lg:items-center gap-y-2 gap-x-6 mb-6">
+              <span className="text-[9px] min-[900px]:text-[10px] uppercase tracking-[0.35em] text-muted-foreground/70 shrink-0">
                 {siteConfig.tagline}
               </span>
-              <span className="text-muted-foreground/30">—</span>
-              <div className="flex items-center gap-6">
-                <a href="#products" className="hover-line text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70 hover:text-foreground transition-colors">Послуги</a>
-                <a href="#vip" className="hover-line text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70 hover:text-foreground transition-colors">VIP</a>
-                <a href="#contacts" className="hover-line text-[11px] uppercase tracking-[0.2em] text-muted-foreground/70 hover:text-foreground transition-colors">Контакти</a>
+              <span className="text-muted-foreground/30 shrink-0 hidden lg:inline">—</span>
+              <div className="flex items-center gap-6 shrink-0">
+                <a href="#products" className="hover-line text-xs md:text-[11px] uppercase tracking-[0.2em] text-foreground/90 hover:text-foreground transition-colors">Послуги</a>
+                <a href="#vip" className="hover-line text-xs md:text-[11px] uppercase tracking-[0.2em] text-foreground/90 hover:text-foreground transition-colors">VIP</a>
+                <a href="#contacts" className="hover-line text-xs md:text-[11px] uppercase tracking-[0.2em] text-foreground/90 hover:text-foreground transition-colors">Контакти</a>
               </div>
             </div>
             <h1 className="hero-headline font-serif text-6xl lg:text-[5rem] xl:text-[5.5rem] leading-[1.05] font-light text-balance">
