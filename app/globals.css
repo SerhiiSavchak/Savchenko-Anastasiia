@@ -5,21 +5,30 @@
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Cormorant Garamond", ui-serif, Georgia, serif;
 
-  /* ── Warm editorial palette ── */
-  --color-background: #F5F2EC;
-  --color-foreground: #1A1A1A;
-  --color-muted: #EDE9E1;
-  --color-muted-foreground: #7A7368;
-  --color-accent: #9C8B7A;
-  --color-accent-foreground: #1A1A1A;
-  --color-border: #DDD8D0;
-  --color-card: #FDFBF8;
-  --color-card-foreground: #1A1A1A;
+  /* ── Motion (elegant, calm) ── */
+  --ease-editorial: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --duration-hover: 0.35s;
+  --duration-image: 0.5s;
+
+  /* ── Warm editorial palette (paper-like) ── */
+  --color-background: #F7F5F0;
+  --color-foreground: #1C1B19;
+  --color-muted: #F0EDE7;
+  --color-muted-foreground: #6B655C;
+  --color-accent: #8B7D6F;
+  --color-accent-foreground: #1C1B19;
+  --color-border: #E2DED6;
+  --color-card: #FDFCFA;
+  --color-card-foreground: #1C1B19;
 
   /* ── Zero radius (editorial) ── */
   --radius-sm: 0rem;
   --radius-md: 0rem;
   --radius-lg: 0rem;
+
+  /* ── Flow Line (scroll-linked editorial path) ── */
+  --flow-line-color: rgba(28, 27, 25, 0.58);
+  --flow-line-width: 1.5px;
 }
 
 /* ── Base ── */
@@ -57,6 +66,11 @@ body {
 .hover-line {
   position: relative;
   display: inline-block;
+  transition: color var(--duration-hover) var(--ease-editorial),
+    transform var(--duration-hover) var(--ease-editorial);
+}
+.hover-line:hover {
+  transform: translateX(1px);
 }
 .hover-line::after {
   content: "";
@@ -66,10 +80,109 @@ body {
   width: 0;
   height: 1px;
   background: currentColor;
-  transition: width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: width var(--duration-hover) var(--ease-editorial);
 }
 .hover-line:hover::after {
   width: 100%;
+}
+
+/* ── Link with arrow (directional) ── */
+.hover-link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color var(--duration-hover) var(--ease-editorial),
+    transform var(--duration-hover) var(--ease-editorial);
+}
+.hover-link-arrow:hover {
+  transform: translateX(3px);
+}
+.hover-link-arrow .arrow {
+  transition: transform var(--duration-hover) var(--ease-editorial);
+}
+.hover-link-arrow:hover .arrow {
+  transform: translateX(2px);
+}
+
+/* ── Card hover (lift + image) ── */
+.card-hover {
+  transition: transform var(--duration-hover) var(--ease-editorial);
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+}
+.card-hover .img-hover {
+  transition: transform var(--duration-image) var(--ease-editorial);
+}
+.card-hover:hover .img-hover {
+  transform: scale(1.04);
+}
+
+/* ── Image hover (standalone) ── */
+.img-hover {
+  transition: transform var(--duration-image) var(--ease-editorial);
+}
+.group:hover .img-hover {
+  transform: scale(1.04);
+}
+
+/* ── Button hover (primary/outline) ── */
+.btn-hover {
+  transition: color var(--duration-hover) var(--ease-editorial),
+    background-color var(--duration-hover) var(--ease-editorial),
+    border-color var(--duration-hover) var(--ease-editorial),
+    transform var(--duration-hover) var(--ease-editorial);
+}
+.btn-hover:hover {
+  transform: translate(1px, -2px);
+}
+.btn-hover:active {
+  transform: translate(0, 0);
+}
+
+/* ── Article preview hover reveal ── */
+.article-reveal-line {
+  position: relative;
+  overflow: hidden;
+  transition: color var(--duration-hover) var(--ease-editorial);
+}
+.article-reveal-line::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width var(--duration-hover) var(--ease-editorial);
+}
+.group:hover .article-reveal-line::after {
+  width: 100%;
+}
+
+/* ── Section labels (Про мене, Формати, Каталог, etc.) ── */
+.section-label {
+  display: inline-block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--color-foreground);
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+.section-label::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-accent);
+  transition: width 2s var(--ease-editorial);
+}
+.reveal.visible .section-label::after {
+  width: 5rem;
 }
 
 /* ── Image caption style ── */
@@ -81,3 +194,91 @@ body {
   color: var(--color-muted-foreground);
   margin-top: 0.75rem;
 }
+
+/* ── Hero animations ── */
+.hero-section {
+  opacity: 0;
+  animation: heroFadeIn 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+@keyframes heroFadeIn {
+  to { opacity: 1; }
+}
+
+.hero-headline {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroReveal 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+.hero-delay-1 { animation-delay: 0.15s; }
+.hero-delay-2 { animation-delay: 0.3s; }
+
+@keyframes heroReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-image {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: heroImageReveal 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s forwards;
+}
+.hero-image-secondary {
+  animation-delay: 0.5s;
+}
+
+@keyframes heroImageReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-image-main {
+  animation: heroImageReveal 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s forwards,
+    heroImageDrift 12s ease-in-out 2.5s infinite;
+}
+@keyframes heroImageDrift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ── First-load loader ── */
+.loader-text {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: loaderTextReveal 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s forwards;
+}
+@keyframes loaderTextReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.loader-line {
+  position: relative;
+  width: 120px;
+  height: 1px;
+  background: var(--color-muted-foreground);
+  overflow: hidden;
+  opacity: 0;
+  animation: loaderLineFadeIn 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0.35s forwards;
+}
+.loader-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-foreground);
+  animation: loaderLineDraw 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.5s forwards;
+}
+@keyframes loaderLineFadeIn {
+  to { opacity: 1; }
+}
+@keyframes loaderLineDraw {
+  to { width: 100%; }
+}
+

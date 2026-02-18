@@ -3,10 +3,10 @@
 import Image from "next/image";
 import type { Product } from "@/types";
 import { formatPrice } from "@/lib/utils";
-import { Clock, ArrowUpRight } from "lucide-react";
+import { Clock } from "lucide-react";
 
 const typeLabels: Record<Product["type"], string> = {
-  online_practice: "Онлайн",
+  online_practice: "Онлайн-дзвiнок",
   offline_practice: "Офлайн",
   video_lesson: "Вiдеоурок",
 };
@@ -14,83 +14,83 @@ const typeLabels: Record<Product["type"], string> = {
 interface ProductCardProps {
   product: Product;
   onBook: (product: Product) => void;
-  layout?: "landscape" | "portrait";
+  onDetail: (product: Product) => void;
 }
 
 export function ProductCard({
   product,
   onBook,
-  layout = "portrait",
+  onDetail,
 }: ProductCardProps) {
   const isVideo = product.type === "video_lesson";
-  const isLandscape = layout === "landscape";
+
+  function handleCardClick(e: React.MouseEvent) {
+    const target = e.target as HTMLElement;
+    if (target.closest("a") || target.closest("button")) return;
+    onDetail(product);
+  }
 
   return (
     <article
-      className={`group flex ${
-        isLandscape ? "flex-col md:flex-row gap-8 md:gap-12" : "flex-col gap-6"
-      }`}
+      onClick={handleCardClick}
+      className="group cursor-pointer flex flex-col card-hover"
     >
-      {/* Image */}
-      <div
-        className={`relative overflow-hidden ${
-          isLandscape
-            ? "md:w-2/5 shrink-0 aspect-[4/3]"
-            : "w-full aspect-[4/5]"
-        }`}
-      >
+      {/* Image — editorial catalog cover */}
+      <div className="relative aspect-[4/5] overflow-hidden mb-4">
         <Image
           src={product.coverImage}
           alt={product.title}
           fill
-          className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-          sizes={
-            isLandscape
-              ? "(max-width: 768px) 100vw, 40vw"
-              : "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          }
+          className="object-cover img-hover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       </div>
 
-      {/* Content */}
-      <div className="flex flex-col justify-center flex-1">
-        <span className="text-[10px] uppercase tracking-[0.25em] text-accent mb-3">
+      {/* Content — no heavy box, editorial feel */}
+      <div className="flex flex-col flex-1">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
           {typeLabels[product.type]}
         </span>
-        <h3 className="font-serif text-2xl md:text-3xl font-light mb-3 text-balance leading-snug">
+        <h3 className="font-serif text-xl md:text-2xl font-light mt-2 mb-2 leading-snug group-hover:text-accent transition-colors duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]">
           {product.title}
         </h3>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-5 max-w-sm">
+        <p
+          className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-4"
+          style={{ maxWidth: "60ch" }}
+        >
           {product.shortDescription}
         </p>
 
-        {/* Meta */}
-        <div className="flex items-center gap-4 mb-6 text-sm">
-          <span className="font-medium">
-            {formatPrice(product.price, product.currency)}
-          </span>
-          <span className="text-accent/40">|</span>
+        {/* Meta row */}
+        <div className="flex items-center gap-3 text-sm mb-4">
           <span className="flex items-center gap-1.5 text-muted-foreground text-xs">
             <Clock size={12} strokeWidth={1.2} />
             {product.durationMinutes} хв
           </span>
+          <span className="text-accent/40">|</span>
+          <span className="font-medium">
+            {formatPrice(product.price, product.currency)}
+          </span>
         </div>
 
-        {/* Action -- text link, not a button */}
+        {/* CTA — text link or minimal button */}
         {isVideo ? (
           <a
             href={product.telegramBotUrl ?? "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover-line inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground transition-colors self-start"
+            onClick={(e) => e.stopPropagation()}
+            className="hover-line text-[11px] uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground self-start mt-auto"
           >
-            Telegram
-            <ArrowUpRight size={12} strokeWidth={1.2} />
+            Перейти в Telegram
           </a>
         ) : (
           <button
-            onClick={() => onBook(product)}
-            className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground self-start"
+            onClick={(e) => {
+              e.stopPropagation();
+              onBook(product);
+            }}
+            className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground self-start mt-auto"
           >
             Записатись
           </button>

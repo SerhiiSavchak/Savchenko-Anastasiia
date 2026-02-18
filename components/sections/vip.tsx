@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { VIPItem } from "@/types";
+import { FlowAnchor } from "@/components/FlowLine";
 
 const formatLabels: Record<string, string> = {
   offline: "Офлайн",
@@ -13,10 +14,13 @@ interface VIPSectionProps {
 
 export function VIPSection({ items }: VIPSectionProps) {
   return (
-    <section id="vip" className="py-32 md:py-44 bg-card">
+    <section id="vip" className="relative py-32 md:py-44 bg-card">
+      <div className="absolute right-0 top-[15%] w-8 h-px pointer-events-none" aria-hidden>
+        <FlowAnchor id="vip" offsetY={0.5} offsetX={0} />
+      </div>
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="reveal mb-24">
-          <span className="text-[10px] uppercase tracking-[0.4em] text-muted-foreground">
+          <span className="section-label">
             Ексклюзив
           </span>
           <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-light mt-5 leading-[1.1]">
@@ -29,9 +33,9 @@ export function VIPSection({ items }: VIPSectionProps) {
         </div>
 
         {/* Featured story layout: big image + text, magazine spread */}
-        <div className="reveal flex flex-col gap-32 md:gap-40">
+        <div className="flex flex-col gap-32 md:gap-40">
           {items.map((item, i) => (
-            <article key={item.id} className="relative">
+            <article key={item.id} className="group relative reveal" style={{ transitionDelay: `${i * 120}ms` }}>
               {/* Large hero image for the story */}
               <div
                 className={`flex flex-col ${
@@ -50,7 +54,7 @@ export function VIPSection({ items }: VIPSectionProps) {
                       alt={item.title}
                       width={800}
                       height={560}
-                      className="w-full object-cover aspect-[4/3]"
+                      className="w-full object-cover aspect-[4/3] img-hover"
                       sizes="(max-width: 768px) 100vw, 60vw"
                     />
                   </div>
@@ -93,7 +97,7 @@ export function VIPSection({ items }: VIPSectionProps) {
 
                     <a
                       href="#contacts"
-                      className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground"
+                      className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground inline-flex items-center gap-1"
                     >
                       {item.callToActionLabel}
                     </a>

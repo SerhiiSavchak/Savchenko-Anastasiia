@@ -21,10 +21,20 @@ export function useScrollReveal() {
       { threshold: 0.15 }
     );
 
-    const targets = el.querySelectorAll(".reveal");
-    targets.forEach((t) => observer.observe(t));
+    const observeAll = () => {
+      const targets = el.querySelectorAll(".reveal:not(.visible)");
+      targets.forEach((t) => observer.observe(t));
+    };
 
-    return () => observer.disconnect();
+    observeAll();
+
+    const mutationObserver = new MutationObserver(observeAll);
+    mutationObserver.observe(el, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
   }, []);
 
   return ref;

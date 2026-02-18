@@ -80,7 +80,7 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
       <div className="relative bg-background w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto p-10 md:p-14">
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 text-muted-foreground hover:text-foreground transition-colors"
+          className="absolute top-6 right-6 text-muted-foreground hover:text-foreground transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:scale-110"
           aria-label="Close"
         >
           <X size={18} strokeWidth={1.2} />
@@ -111,10 +111,10 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
                   <button
                     key={slot.id}
                     onClick={() => setSelectedSlot(slot.id)}
-                    className={`flex items-center justify-between p-4 border text-sm transition-colors text-left ${
+                    className={`flex items-center justify-between p-4 border text-sm transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] text-left ${
                       selectedSlot === slot.id
                         ? "border-foreground bg-muted"
-                        : "border-border hover:border-accent"
+                        : "border-border hover:border-accent hover:translate-x-1"
                     }`}
                   >
                     <span>{formatDate(slot.startAt)}</span>
@@ -153,7 +153,7 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
                 onChange={(e) =>
                   setFormData((p) => ({ ...p, name: e.target.value }))
                 }
-                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-colors"
+                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
                 placeholder="Анастасiя"
               />
             </label>
@@ -169,7 +169,7 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
                 onChange={(e) =>
                   setFormData((p) => ({ ...p, phone: e.target.value }))
                 }
-                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-colors"
+                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
                 placeholder="+380..."
               />
             </label>
@@ -183,7 +183,7 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
                 onChange={(e) =>
                   setFormData((p) => ({ ...p, telegram: e.target.value }))
                 }
-                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-colors"
+                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
                 placeholder="@username"
               />
             </label>
@@ -198,7 +198,7 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
                 onChange={(e) =>
                   setFormData((p) => ({ ...p, email: e.target.value }))
                 }
-                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-colors"
+                className="border border-border px-4 py-3.5 text-sm bg-transparent focus:outline-none focus:border-foreground transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)]"
                 placeholder="email@example.com"
               />
             </label>

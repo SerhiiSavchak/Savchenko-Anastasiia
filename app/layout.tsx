@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
+import { FirstLoadLoader } from "@/components/first-load-loader";
+import { FlowLine } from "@/components/FlowLine";
 
 const dmSans = DM_Sans({
   subsets: ["latin", "latin-ext"],
@@ -16,11 +18,11 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Anastasiia Savchenko",
+  title: "Anastasia Savchenko",
   description:
     "Простір для трансформації та практики. Ретрити, менторинг та індивідуальна підтримка.",
   openGraph: {
-    title: "Anastasiia Savchenko",
+    title: "Anastasia Savchenko",
     description:
       "Простір для трансформації та практики від Анастасії Савченко.",
     type: "website",
@@ -28,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F5F2EC",
+  themeColor: "#F7F5F0",
   width: "device-width",
   initialScale: 1,
 };
@@ -40,7 +42,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="uk" className={`${dmSans.variable} ${cormorant.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <FlowLine />
+        <div className="relative z-10">
+          <FirstLoadLoader />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

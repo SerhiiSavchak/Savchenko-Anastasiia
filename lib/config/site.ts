@@ -2,7 +2,7 @@ import type { ExpertiseStat, ContactInfo } from "@/types";
 
 export const siteConfig = {
   name: "Anastasiia Savchenko",
-  tagline: "Практик. Наставник. Експерт.",
+  tagline: "Тілесний коуч. РЕТРИТ. Танці",
   heroTitle: "Простір для трансформації та практики",
   heroSubtitle:
     "Ретрити, менторинг та індивідуальна підтримка для тих, хто готовий до змін",
@@ -19,8 +19,8 @@ export const expertiseStats: ExpertiseStat[] = [
 ];
 
 export const contacts: ContactInfo = {
-  telegram: "https://t.me/anastasiia_savchenko",
-  instagram: "https://instagram.com/anastasiia_savchenko",
+  telegram: "https://t.me/anastasia_savchenko",
+  instagram: "https://instagram.com/anastasia_savchenko",
   phone: "+380 XX XXX XX XX",
   email: "hello@savchenko.com",
 };
