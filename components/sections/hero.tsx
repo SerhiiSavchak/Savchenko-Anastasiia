@@ -62,7 +62,7 @@ export function Hero({ featuredVIP }: HeroProps) {
               }
             >
               <Image
-                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=85"
+                src="/images/hero-main.png"
                 alt=""
                 fill
                 priority
@@ -83,7 +83,7 @@ export function Hero({ featuredVIP }: HeroProps) {
               }
             >
               <Image
-                src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=85"
+                src="/images/hero-secondary.png"
                 alt=""
                 fill
                 className="object-cover"
@@ -159,7 +159,7 @@ export function Hero({ featuredVIP }: HeroProps) {
               }
             >
               <Image
-                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200&q=85"
+                src="/images/hero-main.png"
                 alt=""
                 fill
                 priority
@@ -180,7 +180,7 @@ export function Hero({ featuredVIP }: HeroProps) {
               }
             >
               <Image
-                src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=85"
+                src="/images/hero-secondary.png"
                 alt=""
                 fill
                 className="object-cover"
