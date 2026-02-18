@@ -5,6 +5,9 @@ import type { Product } from "@/types";
 import { ProductCard } from "@/components/product-card";
 import { BookingModal } from "@/components/booking-modal";
 import { ProductDetailModal } from "@/components/product-detail-modal";
+import { useMediaQuery } from "@/hooks/use-media-query";
+
+const MOBILE_LIMIT = 6;
 
 type MainFilter = "all" | "online" | "offline";
 type OnlineSubFilter = "calls" | "video" | "all";
@@ -48,8 +51,11 @@ export function Products({ products }: ProductsProps) {
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [bookingProduct, setBookingProduct] = useState<Product | null>(null);
   const [detailProduct, setDetailProduct] = useState<Product | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState(false);
 
+  const isMobile = useMediaQuery("(max-width: 640px)");
   const scrollYRef = useRef<number | null>(null);
+  const productsSectionRef = useRef<HTMLElement>(null);
 
   const handleFilterChange = (fn: () => void) => {
     scrollYRef.current = window.scrollY;
@@ -67,6 +73,11 @@ export function Products({ products }: ProductsProps) {
       });
     }, 200);
     return () => clearTimeout(t);
+  }, [mainFilter, onlineSubFilter, activeTag]);
+
+  // Reset mobile expand when filters change
+  useEffect(() => {
+    setMobileExpanded(false);
   }, [mainFilter, onlineSubFilter, activeTag]);
 
   const tags = useMemo(() => {
@@ -91,8 +102,28 @@ export function Products({ products }: ProductsProps) {
     });
   }, [products, mainFilter, onlineSubFilter, activeTag]);
 
+  const showMobileExpand = isMobile && filtered.length > MOBILE_LIMIT;
+  const visibleProducts = filtered.slice(0, MOBILE_LIMIT);
+  const hiddenProducts = filtered.slice(MOBILE_LIMIT);
+
+  function handleCollapse() {
+    setMobileExpanded(false);
+    requestAnimationFrame(() => {
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      productsSectionRef.current?.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    });
+  }
+
   return (
-    <section id="products" className="relative py-32 md:py-44" style={{ overflowAnchor: "none" }}>
+    <section
+      id="products"
+      ref={productsSectionRef}
+      className="relative py-32 md:py-44"
+      style={{ overflowAnchor: "none" }}
+    >
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="reveal">
           <span className="section-label">
@@ -177,7 +208,7 @@ export function Products({ products }: ProductsProps) {
 
         {/* Card grid — editorial catalog style */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16 lg:gap-20 min-h-[480px]" style={{ overflowAnchor: "none" }}>
-          {filtered.map((product, i) => (
+          {(showMobileExpand ? visibleProducts : filtered).map((product, i) => (
             <div key={product.id} className="reveal cursor-pointer" style={{ transitionDelay: `${i * 50}ms` }}>
               <ProductCard
                 product={product}
@@ -187,6 +218,44 @@ export function Products({ products }: ProductsProps) {
             </div>
           ))}
         </div>
+
+        {/* Mobile expandable: hidden items with smooth animation */}
+        {showMobileExpand && (
+          <div
+            className="products-expand-wrapper grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] md:hidden"
+            style={{ gridTemplateRows: mobileExpanded ? "1fr" : "0fr" }}
+          >
+            <div className="min-h-0 overflow-hidden">
+              <div className="grid grid-cols-1 gap-12 pt-0 mt-0">
+                {hiddenProducts.map((product, i) => (
+                  <div key={product.id} className="reveal cursor-pointer" style={{ transitionDelay: `${(MOBILE_LIMIT + i) * 50}ms` }}>
+                    <ProductCard
+                      product={product}
+                      onBook={setBookingProduct}
+                      onDetail={setDetailProduct}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Mobile expand/collapse CTA */}
+        {showMobileExpand && (
+          <div className="flex flex-col items-center gap-3 mt-10 md:hidden">
+            <span className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+              Показано {mobileExpanded ? filtered.length : MOBILE_LIMIT} з {filtered.length}
+            </span>
+            <button
+              type="button"
+              onClick={() => (mobileExpanded ? handleCollapse() : setMobileExpanded(true))}
+              className="hover-line cursor-pointer text-[11px] uppercase tracking-[0.15em] text-foreground border-b border-foreground/60 pb-0.5 transition-colors hover:border-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-2"
+            >
+              {mobileExpanded ? "Згорнути" : "Показати всі"}
+            </button>
+          </div>
+        )}
 
         {filtered.length === 0 && (
           <p className="reveal text-center text-muted-foreground mt-16 text-sm">
