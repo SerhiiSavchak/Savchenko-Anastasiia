@@ -16,6 +16,8 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [step, setStep] = useState<"slots" | "form" | "success">("slots");
   const [submitting, setSubmitting] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -36,10 +38,18 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
+    const t = requestAnimationFrame(() => setIsOpen(true));
     return () => {
+      cancelAnimationFrame(t);
       document.body.style.overflow = "";
     };
   }, []);
+
+  function handleClose() {
+    if (isClosing) return;
+    setIsClosing(true);
+    setTimeout(onClose, 300);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -71,16 +81,22 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Overlay */}
       <div
-        className="absolute inset-0 bg-foreground/30 backdrop-blur-sm"
-        onClick={onClose}
+        className={`absolute inset-0 bg-foreground/30 backdrop-blur-sm transition-opacity duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
+          isOpen && !isClosing ? "opacity-100" : "opacity-0"
+        }`}
+        onClick={handleClose}
         aria-hidden
       />
 
       {/* Modal -- warm paper background */}
-      <div className="relative bg-background w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto p-10 md:p-14">
+      <div
+        className={`relative bg-background w-full max-w-xl mx-4 max-h-[95vh] overflow-y-auto p-10 md:p-12 transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
+          isOpen && !isClosing ? "opacity-100 scale-100" : "opacity-0 scale-[0.97]"
+        }`}
+      >
         <button
-          onClick={onClose}
-          className="absolute top-6 right-6 text-muted-foreground hover:text-foreground transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:scale-110"
+          onClick={handleClose}
+          className="absolute top-6 right-6 cursor-pointer text-muted-foreground hover:text-foreground transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:scale-110"
           aria-label="Close"
         >
           <X size={18} strokeWidth={1.2} />
@@ -94,7 +110,7 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
         {/* Step: Select slot */}
         {step === "slots" && (
           <div>
-            <h3 className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-6">
+            <h3 className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mb-4">
               Оберiть час
             </h3>
             {loading ? (
@@ -110,8 +126,9 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
                 {slots.map((slot) => (
                   <button
                     key={slot.id}
+                    type="button"
                     onClick={() => setSelectedSlot(slot.id)}
-                    className={`flex items-center justify-between p-4 border text-sm transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] text-left ${
+                    className={`cursor-pointer flex items-center justify-between p-4 border text-sm transition-all duration-[350ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] text-left ${
                       selectedSlot === slot.id
                         ? "border-foreground bg-muted"
                         : "border-border hover:border-accent hover:translate-x-1"
@@ -127,8 +144,9 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
             )}
             {selectedSlot && (
               <button
+                type="button"
                 onClick={() => setStep("form")}
-                className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground"
+                className="hover-line cursor-pointer text-[11px] uppercase tracking-[0.18em] text-foreground"
               >
                 Далi
               </button>
@@ -207,14 +225,14 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
               <button
                 type="button"
                 onClick={() => setStep("slots")}
-                className="hover-line text-[11px] uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
+                className="hover-line cursor-pointer text-[11px] uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
               >
                 Назад
               </button>
               <button
                 type="submit"
                 disabled={submitting}
-                className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground disabled:opacity-40"
+                className="hover-line cursor-pointer text-[11px] uppercase tracking-[0.18em] text-foreground disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {submitting ? "Вiдправка..." : "Записатись"}
               </button>
@@ -231,8 +249,9 @@ export function BookingModal({ product, onClose }: BookingModalProps) {
               {"Ваше бронювання прийнято. Ми зв'яжемось з вами найближчим часом."}
             </p>
             <button
-              onClick={onClose}
-              className="hover-line text-[11px] uppercase tracking-[0.18em] text-foreground"
+              type="button"
+              onClick={handleClose}
+              className="hover-line cursor-pointer text-[11px] uppercase tracking-[0.18em] text-foreground"
             >
               Закрити
             </button>

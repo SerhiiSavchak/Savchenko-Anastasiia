@@ -20,10 +20,10 @@ export function About() {
           <p className="reveal mt-10 text-muted-foreground leading-[1.8] text-[15px] md:text-base" style={{ transitionDelay: "100ms" }}>
             {siteConfig.aboutText}
           </p>
-          <blockquote className="reveal mt-12 font-serif text-2xl md:text-3xl lg:text-4xl italic font-light text-foreground/70 leading-snug max-w-lg" style={{ transitionDelay: "200ms" }}>
+          <blockquote className="reveal mt-8 font-serif text-xl md:text-2xl lg:text-3xl italic font-light text-foreground/70 leading-snug max-w-lg" style={{ transitionDelay: "200ms" }}>
             {siteConfig.aboutQuote}
           </blockquote>
-          <div className="reveal mt-8 w-12 h-px bg-accent/40" style={{ transitionDelay: "300ms" }} />
+          <div className="reveal mt-6 w-12 h-px bg-accent/40" style={{ transitionDelay: "300ms" }} />
         </div>
       </div>
     </section>

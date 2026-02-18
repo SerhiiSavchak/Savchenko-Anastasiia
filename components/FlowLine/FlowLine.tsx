@@ -7,15 +7,30 @@ const LERP_FACTOR = 0.12;
 const MOBILE_BREAKPOINT = 768;
 const DEBUG = process.env.NEXT_PUBLIC_FLOW_DEBUG === "true";
 
+/** Высота хедера — горизонтальные сегменты не опускаются выше */
+const HEADER_SAFE_Y = 96;
+
+/** Доля viewport для боковых коридоров (линия идёт в 2.5% от краёв — вне контента) */
+const DESKTOP_GUTTER_RATIO = 0.025;
+
+/** Шаг вертикального смещения для desktop (1100–1920) — единый для одинакового вида */
+const DESKTOP_STEP = 90;
+
 interface Point {
   x: number;
   y: number;
 }
 
+/** Ограничивает Y, чтобы не пересекать зону хедера */
+function clampAboveHeader(y: number): number {
+  return Math.max(y, HEADER_SAFE_Y);
+}
+
 /**
- * Weaving path: alternates left-right lanes, 90° corners only.
- * Routes through gutters — never touches content.
- * Desktop: full weaving. Mobile: simplified, fewer turns.
+ * Weaving path: чередование левого/правого коридоров, углы 90°.
+ * Маршрут идёт в боковых «коридорах» (2.5% от краёв) — не задевает контент.
+ * Desktop (1100–1920): единая логика для одинакового вида.
+ * Mobile: упрощённый маршрут.
  */
 function buildPath(
   points: Point[],
@@ -25,10 +40,9 @@ function buildPath(
 ): string {
   if (points.length < 2) return "";
 
-  const margin = isMobile ? 40 : 48;
-  const leftLane = margin;
-  const rightLane = viewportWidth - margin;
-  const step = isMobile ? 60 : 90;
+  const step = isMobile ? 60 : DESKTOP_STEP;
+  const leftLane = isMobile ? 40 : Math.round(viewportWidth * DESKTOP_GUTTER_RATIO);
+  const rightLane = isMobile ? viewportWidth - 40 : Math.round(viewportWidth * (1 - DESKTOP_GUTTER_RATIO));
 
   const segments: string[] = [];
   let prev = points[0];
@@ -39,13 +53,12 @@ function buildPath(
     const curr = points[i];
     const isLastSegment = i === points.length - 1;
     const isAboutSegment = !isMobile && i === 1;
-    const isVIPSegment = !isMobile && i === 5 && points.length >= 6;
 
     if (isLastSegment && !isMobile) {
       const bendX = rightLane - 60;
       const docBottom = documentHeight - 24;
-      segments.push(`L ${prev.x} ${prev.y + step}`);
-      const y1 = prev.y + step;
+      const y1 = clampAboveHeader(prev.y + step);
+      segments.push(`L ${prev.x} ${y1}`);
       segments.push(`L ${rightLane} ${y1}`);
       segments.push(`L ${rightLane} ${curr.y}`);
       segments.push(`L ${bendX} ${curr.y}`);
@@ -68,20 +81,10 @@ function buildPath(
       const currOnRight = curr.x > viewportWidth / 2;
       const laneX = currOnRight ? leftLane : rightLane;
       const nextLaneX = currOnRight ? rightLane : leftLane;
-      const crossY = curr.y - 100;
-      segments.push(`L ${prev.x} ${prev.y + step}`);
-      segments.push(`L ${laneX} ${prev.y + step}`);
-      segments.push(`L ${laneX} ${crossY}`);
-      segments.push(`L ${nextLaneX} ${crossY}`);
-      segments.push(`L ${curr.x} ${crossY}`);
-      segments.push(`L ${curr.x} ${curr.y}`);
-    } else if (isVIPSegment) {
-      const currOnRight = curr.x > viewportWidth / 2;
-      const laneX = currOnRight ? leftLane : rightLane;
-      const nextLaneX = currOnRight ? rightLane : leftLane;
-      const crossY = curr.y + 18;
-      segments.push(`L ${prev.x} ${prev.y + step}`);
-      segments.push(`L ${laneX} ${prev.y + step}`);
+      const crossY = clampAboveHeader(curr.y - 100);
+      const y1 = clampAboveHeader(prev.y + step);
+      segments.push(`L ${prev.x} ${y1}`);
+      segments.push(`L ${laneX} ${y1}`);
       segments.push(`L ${laneX} ${crossY}`);
       segments.push(`L ${nextLaneX} ${crossY}`);
       segments.push(`L ${curr.x} ${crossY}`);
@@ -91,11 +94,11 @@ function buildPath(
       const laneX = currOnRight ? leftLane : rightLane;
       const nextLaneX = currOnRight ? rightLane : leftLane;
 
-      segments.push(`L ${prev.x} ${prev.y + step}`);
-      const y1 = prev.y + step;
-      segments.push(`L ${laneX} ${y1}`);
+      const y1 = clampAboveHeader(prev.y + step);
+      const y2 = clampAboveHeader(curr.y - step);
 
-      const y2 = curr.y - step;
+      segments.push(`L ${prev.x} ${y1}`);
+      segments.push(`L ${laneX} ${y1}`);
       segments.push(`L ${laneX} ${y2}`);
       segments.push(`L ${nextLaneX} ${y2}`);
       segments.push(`L ${nextLaneX} ${curr.y}`);
@@ -294,7 +297,7 @@ export function FlowLine() {
 
 function FlowLineDebug() {
   const [anchors, setAnchors] = useState<Array<{ x: number; y: number }>>([]);
-  const [lanes, setLanes] = useState({ left: 48, right: 0 });
+  const [lanes, setLanes] = useState({ left: 0, right: 0 });
 
   useEffect(() => {
     const update = () => {
@@ -306,7 +309,11 @@ function FlowLineDebug() {
         })
       );
       const vw = window.innerWidth;
-      setLanes({ left: 48, right: vw - 48 });
+      const isMobile = vw < MOBILE_BREAKPOINT;
+      setLanes({
+        left: isMobile ? 40 : Math.round(vw * DESKTOP_GUTTER_RATIO),
+        right: isMobile ? vw - 40 : Math.round(vw * (1 - DESKTOP_GUTTER_RATIO)),
+      });
     };
     update();
     window.addEventListener("scroll", update);

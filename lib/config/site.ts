@@ -1,7 +1,7 @@
 import type { ExpertiseStat, ContactInfo } from "@/types";
 
 export const siteConfig = {
-  name: "Anastasiia Savchenko",
+  name: "Anastasia Savchenko",
   tagline: "Тілесний коуч. РЕТРИТ. Танці",
   heroTitle: "Простір для трансформації та практики",
   heroSubtitle:

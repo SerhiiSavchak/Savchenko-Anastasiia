@@ -104,6 +104,82 @@ body {
   transform: translateX(2px);
 }
 
+/* ── Modal animations (ProductDetailModal) ── */
+@keyframes modal-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modal-overlay-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes modal-content-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+@keyframes modal-content-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+}
+.modal-overlay-enter {
+  opacity: 0;
+  animation: modal-overlay-in 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+.modal-overlay-exit {
+  animation: modal-overlay-out 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+.modal-content-enter {
+  opacity: 0;
+  transform: scale(0.92) translateY(12px);
+  animation: modal-content-in 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+.modal-content-exit {
+  animation: modal-content-out 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+/* ── Product Detail Modal (responsive layout) ── */
+.product-detail-modal {
+  /* Prevent layout shift; flex children can shrink */
+  contain: layout;
+}
+.product-detail-modal h2,
+.product-detail-modal p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* ── Modal description scroll (thin scrollbar) ── */
+.modal-desc-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+.modal-desc-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-desc-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-desc-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+.modal-desc-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-foreground);
+}
+
 /* ── Card hover (lift + image) ── */
 .card-hover {
   transition: transform var(--duration-hover) var(--ease-editorial);
@@ -132,12 +208,19 @@ body {
     background-color var(--duration-hover) var(--ease-editorial),
     border-color var(--duration-hover) var(--ease-editorial),
     transform var(--duration-hover) var(--ease-editorial);
+  -webkit-tap-highlight-color: transparent;
 }
 .btn-hover:hover {
   transform: translate(1px, -2px);
 }
 .btn-hover:active {
   transform: translate(0, 0);
+}
+
+/* Products section: ensure fill-on-tap for touch devices (hover doesn't work) */
+#products button,
+#products a.btn-hover {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ── Article preview hover reveal ── */
@@ -280,5 +363,79 @@ body {
 }
 @keyframes loaderLineDraw {
   to { width: 100%; }
+}
+
+/* ── Mobile menu overlay (full-screen burger) ── */
+@keyframes mobile-menu-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes mobile-menu-overlay-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes mobile-menu-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes mobile-menu-content-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+@keyframes mobile-menu-nav-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes mobile-menu-icon-rotate-in {
+  from { transform: rotate(-90deg); opacity: 0; }
+  to { transform: rotate(0deg); opacity: 1; }
+}
+.mobile-menu-overlay-enter {
+  animation: mobile-menu-overlay-in 0.35s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+.mobile-menu-overlay-exit {
+  animation: mobile-menu-overlay-out 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+.mobile-menu-content-enter {
+  animation: mobile-menu-content-in 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) 0.05s forwards;
+}
+.mobile-menu-content-exit {
+  animation: mobile-menu-content-out 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+.mobile-menu-nav-item {
+  opacity: 0;
+  animation: mobile-menu-nav-in 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+.mobile-menu-icon-enter {
+  animation: mobile-menu-icon-rotate-in 0.35s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-overlay-enter,
+  .mobile-menu-overlay-exit,
+  .mobile-menu-content-enter,
+  .mobile-menu-content-exit,
+  .mobile-menu-nav-item,
+  .mobile-menu-icon-enter {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
 }
 

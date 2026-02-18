@@ -86,7 +86,7 @@ export function Contacts() {
             </p>
           </div>
 
-          {/* Right: contact list as quiet editorial list */}
+          {/* Right: contact list */}
           <div className="flex-1 md:pt-6">
             {contactItems.map((item, i) => (
               <a
