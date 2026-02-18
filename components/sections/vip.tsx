@@ -15,8 +15,8 @@ interface VIPSectionProps {
 export function VIPSection({ items }: VIPSectionProps) {
   return (
     <section id="vip" className="relative py-32 md:py-44 bg-card">
-      <div className="absolute left-0 top-[15%] w-8 h-px pointer-events-none" aria-hidden>
-        <FlowAnchor id="vip" offsetY={0.5} offsetX={1} />
+      <div className="absolute right-0 top-[15%] w-8 h-px pointer-events-none" aria-hidden>
+        <FlowAnchor id="vip" offsetY={0.5} offsetX={0} />
       </div>
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="reveal mb-24">

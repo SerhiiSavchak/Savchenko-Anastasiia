@@ -3,8 +3,8 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { FLOW_ANCHOR_SELECTOR } from "./FlowAnchor";
 
-const LERP_FACTOR = 0.08;
-const GUTTER = 32;
+const LERP_FACTOR = 0.12;
+const MOBILE_BREAKPOINT = 768;
 const DEBUG = process.env.NEXT_PUBLIC_FLOW_DEBUG === "true";
 
 interface Point {
@@ -13,18 +13,96 @@ interface Point {
 }
 
 /**
- * Minimal path: single vertical line along left gutter.
- * Connects section anchors (all in gutter) — never touches content.
- * Reversible: scroll down = draw, scroll up = retract.
+ * Weaving path: alternates left-right lanes, 90° corners only.
+ * Routes through gutters — never touches content.
+ * Desktop: full weaving. Mobile: simplified, fewer turns.
  */
-function buildPath(points: Point[]): string {
+function buildPath(
+  points: Point[],
+  viewportWidth: number,
+  isMobile: boolean,
+  documentHeight: number
+): string {
   if (points.length < 2) return "";
 
+  const margin = isMobile ? 40 : 48;
+  const leftLane = margin;
+  const rightLane = viewportWidth - margin;
+  const step = isMobile ? 60 : 90;
+
   const segments: string[] = [];
-  segments.push(`M ${GUTTER} ${points[0].y}`);
+  let prev = points[0];
+
+  segments.push(`M ${prev.x} ${prev.y}`);
 
   for (let i = 1; i < points.length; i++) {
-    segments.push(`L ${GUTTER} ${points[i].y}`);
+    const curr = points[i];
+    const isLastSegment = i === points.length - 1;
+    const isAboutSegment = !isMobile && i === 1;
+    const isVIPSegment = !isMobile && i === 5 && points.length >= 6;
+
+    if (isLastSegment && !isMobile) {
+      const bendX = rightLane - 60;
+      const docBottom = documentHeight - 24;
+      segments.push(`L ${prev.x} ${prev.y + step}`);
+      const y1 = prev.y + step;
+      segments.push(`L ${rightLane} ${y1}`);
+      segments.push(`L ${rightLane} ${curr.y}`);
+      segments.push(`L ${bendX} ${curr.y}`);
+      segments.push(`L ${bendX} ${docBottom}`);
+    } else if (isMobile && isLastSegment) {
+      const midY = (prev.y + curr.y) / 2;
+      segments.push(`L ${prev.x} ${midY}`);
+      segments.push(`L ${rightLane} ${midY}`);
+      segments.push(`L ${rightLane} ${curr.y}`);
+      segments.push(`L ${curr.x} ${curr.y}`);
+    } else if (isMobile) {
+      const midY = (prev.y + curr.y) / 2;
+      const currOnRight = curr.x > viewportWidth / 2;
+      const laneX = currOnRight ? rightLane : leftLane;
+      segments.push(`L ${prev.x} ${midY}`);
+      segments.push(`L ${laneX} ${midY}`);
+      segments.push(`L ${laneX} ${curr.y}`);
+      segments.push(`L ${curr.x} ${curr.y}`);
+    } else if (isAboutSegment) {
+      const currOnRight = curr.x > viewportWidth / 2;
+      const laneX = currOnRight ? leftLane : rightLane;
+      const nextLaneX = currOnRight ? rightLane : leftLane;
+      const crossY = curr.y - 100;
+      segments.push(`L ${prev.x} ${prev.y + step}`);
+      segments.push(`L ${laneX} ${prev.y + step}`);
+      segments.push(`L ${laneX} ${crossY}`);
+      segments.push(`L ${nextLaneX} ${crossY}`);
+      segments.push(`L ${curr.x} ${crossY}`);
+      segments.push(`L ${curr.x} ${curr.y}`);
+    } else if (isVIPSegment) {
+      const currOnRight = curr.x > viewportWidth / 2;
+      const laneX = currOnRight ? leftLane : rightLane;
+      const nextLaneX = currOnRight ? rightLane : leftLane;
+      const crossY = curr.y + 18;
+      segments.push(`L ${prev.x} ${prev.y + step}`);
+      segments.push(`L ${laneX} ${prev.y + step}`);
+      segments.push(`L ${laneX} ${crossY}`);
+      segments.push(`L ${nextLaneX} ${crossY}`);
+      segments.push(`L ${curr.x} ${crossY}`);
+      segments.push(`L ${curr.x} ${curr.y}`);
+    } else {
+      const currOnRight = curr.x > viewportWidth / 2;
+      const laneX = currOnRight ? leftLane : rightLane;
+      const nextLaneX = currOnRight ? rightLane : leftLane;
+
+      segments.push(`L ${prev.x} ${prev.y + step}`);
+      const y1 = prev.y + step;
+      segments.push(`L ${laneX} ${y1}`);
+
+      const y2 = curr.y - step;
+      segments.push(`L ${laneX} ${y2}`);
+      segments.push(`L ${nextLaneX} ${y2}`);
+      segments.push(`L ${nextLaneX} ${curr.y}`);
+      segments.push(`L ${curr.x} ${curr.y}`);
+    }
+
+    prev = curr;
   }
 
   return segments.join(" ");
@@ -32,13 +110,15 @@ function buildPath(points: Point[]): string {
 
 function getAnchorPoints(): Point[] {
   const anchors = document.querySelectorAll<HTMLElement>(FLOW_ANCHOR_SELECTOR);
-  return Array.from(anchors).map((el) => {
-    const rect = el.getBoundingClientRect();
-    return {
-      x: rect.left + rect.width / 2 + window.scrollX,
-      y: rect.top + rect.height / 2 + window.scrollY,
-    };
-  });
+  return Array.from(anchors)
+    .filter((el) => el.getAttribute("data-flow-anchor") !== "contacts")
+    .map((el) => {
+      const rect = el.getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2 + window.scrollX,
+        y: rect.top + rect.height / 2 + window.scrollY,
+      };
+    });
 }
 
 export function FlowLine() {
@@ -47,6 +127,7 @@ export function FlowLine() {
   const [pathD, setPathD] = useState("");
   const [totalLength, setTotalLength] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const currentProgressRef = useRef(0);
   const targetProgressRef = useRef(0);
   const rafRef = useRef<number | null>(null);
@@ -59,7 +140,10 @@ export function FlowLine() {
       return;
     }
 
-    const d = buildPath(points);
+    const vw = typeof window !== "undefined" ? window.innerWidth : 1920;
+    const docH = typeof window !== "undefined" ? document.documentElement.scrollHeight : 3000;
+    const mobile = vw < MOBILE_BREAKPOINT;
+    const d = buildPath(points, vw, mobile, docH);
     setPathD(d);
 
     requestAnimationFrame(() => {
@@ -74,6 +158,14 @@ export function FlowLine() {
     const handler = () => setReducedMotion(mq.matches);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    const checkMobile = () =>
+      setIsMobile(typeof window !== "undefined" && window.innerWidth < MOBILE_BREAKPOINT);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
@@ -149,7 +241,12 @@ export function FlowLine() {
   return (
     <div
       className="flow-line-overlay"
-      style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }}
+      style={{
+        position: "fixed",
+        inset: 0,
+        pointerEvents: "none",
+        zIndex: isMobile ? 0 : 20,
+      }}
       aria-hidden
     >
       <svg
@@ -167,7 +264,7 @@ export function FlowLine() {
           strokeWidth="var(--flow-line-width)"
           strokeLinecap="square"
           strokeLinejoin="miter"
-          opacity={0.1}
+          opacity={0.18}
           style={{
             strokeDasharray: dashArray,
             strokeDashoffset: showStatic ? 0 : totalLength * (1 - currentProgressRef.current),
@@ -197,6 +294,7 @@ export function FlowLine() {
 
 function FlowLineDebug() {
   const [anchors, setAnchors] = useState<Array<{ x: number; y: number }>>([]);
+  const [lanes, setLanes] = useState({ left: 48, right: 0 });
 
   useEffect(() => {
     const update = () => {
@@ -207,6 +305,8 @@ function FlowLineDebug() {
           return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
         })
       );
+      const vw = window.innerWidth;
+      setLanes({ left: 48, right: vw - 48 });
     };
     update();
     window.addEventListener("scroll", update);
@@ -219,6 +319,30 @@ function FlowLineDebug() {
 
   return (
     <>
+      {/* Lane guides */}
+      <div
+        style={{
+          position: "fixed",
+          left: lanes.left,
+          top: 0,
+          bottom: 0,
+          width: 1,
+          background: "rgba(255,0,0,0.25)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          position: "fixed",
+          left: lanes.right,
+          top: 0,
+          bottom: 0,
+          width: 1,
+          background: "rgba(255,0,0,0.25)",
+          pointerEvents: "none",
+        }}
+      />
+      {/* Anchor markers */}
       {anchors.map((a, i) => (
         <div
           key={i}
@@ -230,7 +354,7 @@ function FlowLineDebug() {
             height: 12,
             borderRadius: "50%",
             background: "red",
-            opacity: 0.6,
+            opacity: 0.7,
             pointerEvents: "none",
           }}
         />

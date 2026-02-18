@@ -1,16 +1,18 @@
 import { BrandLogo } from "@/components/brand-logo";
 import { navigation } from "@/lib/config/site";
+import { FlowAnchor } from "@/components/FlowLine";
 
 export function Footer() {
   return (
     <footer className="pt-24 pb-16 bg-card">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         {/* Top */}
-        <div className="flex flex-col md:flex-row items-start justify-between gap-12 mb-20">
+        <div className="relative flex flex-col md:flex-row items-start justify-between gap-12 mb-20">
           <div className="reveal">
             <BrandLogo size="md" />
           </div>
-          <nav className="reveal flex flex-wrap gap-x-10 gap-y-3" aria-label="Footer navigation" style={{ transitionDelay: "80ms" }}>
+          <nav className="relative reveal flex flex-wrap gap-x-10 gap-y-3" aria-label="Footer navigation" style={{ transitionDelay: "80ms" }}>
+            <FlowAnchor id="footer" offsetY={0.5} offsetX={0.5} />
             {navigation.map((item) => (
               <a
                 key={item.href}

@@ -24,8 +24,8 @@ const directions = [
 export function Directions() {
   return (
     <section id="directions" className="relative py-28 md:py-40 bg-card">
-      <div className="absolute left-0 top-[15%] w-8 h-px pointer-events-none" aria-hidden>
-        <FlowAnchor id="directions" offsetY={0.5} offsetX={1} />
+      <div className="absolute right-0 top-[15%] w-8 h-px pointer-events-none" aria-hidden>
+        <FlowAnchor id="directions" offsetY={0.5} offsetX={0} />
       </div>
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="reveal">

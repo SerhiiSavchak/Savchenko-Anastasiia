@@ -4,8 +4,8 @@ import { FlowAnchor } from "@/components/FlowLine";
 export function About() {
   return (
     <section id="about" className="relative py-32 md:py-44 bg-card">
-      <div className="absolute left-0 top-[15%] w-8 h-px pointer-events-none" aria-hidden>
-        <FlowAnchor id="about" offsetY={0.5} offsetX={1} />
+      <div className="absolute right-0 top-[15%] w-8 h-px pointer-events-none" aria-hidden>
+        <FlowAnchor id="about" offsetY={0.5} offsetX={0} />
       </div>
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="max-w-2xl mx-auto md:mx-0 md:ml-[15%]">

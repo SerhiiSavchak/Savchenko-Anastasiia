@@ -27,8 +27,8 @@
   --radius-lg: 0rem;
 
   /* ── Flow Line (scroll-linked editorial path) ── */
-  --flow-line-color: rgba(28, 27, 25, 0.4);
-  --flow-line-width: 1px;
+  --flow-line-color: rgba(28, 27, 25, 0.58);
+  --flow-line-width: 1.5px;
 }
 
 /* ── Base ── */
