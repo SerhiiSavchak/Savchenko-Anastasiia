@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useRef, useEffect } from "react";
 import type { Product } from "@/types";
-import { FlowAnchor } from "@/components/FlowLine";
 import { ProductCard } from "@/components/product-card";
 import { BookingModal } from "@/components/booking-modal";
 import { ProductDetailModal } from "@/components/product-detail-modal";
@@ -94,9 +93,6 @@ export function Products({ products }: ProductsProps) {
 
   return (
     <section id="products" className="relative py-32 md:py-44" style={{ overflowAnchor: "none" }}>
-      <div className="absolute left-0 top-[15%] w-8 h-px pointer-events-none" aria-hidden>
-        <FlowAnchor id="products" offsetY={0.5} offsetX={1} />
-      </div>
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
         <div className="reveal">
           <span className="section-label">

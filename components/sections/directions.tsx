@@ -15,7 +15,7 @@ const directions = [
   {
     title: "Офлайн",
     description:
-      "Очнi практики та груповi заняття у Києвi. Жива енергiя та iндивiдуальний пiдхiд.",
+      "Очнi практики та груповi заняття у Львові. Жива енергiя та iндивiдуальний пiдхiд.",
     coverImage: "/images/placeholder-3.jpg",
     caption: "Очна практика",
   },
